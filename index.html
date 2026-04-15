@@ -7,7 +7,7 @@
     
     <!-- 카카오톡, 디스코드 등 외부 링크 공유 시 보이는 미리보기 (OG 태그) -->
     <meta property="og:title" content="🔥 티밀리존 (T-mily Zone)">
-    <meta property="og:description" content="T1 팬들을 위한 커맨드 센터 & 미니게임 허브">
+    <meta property="og:description" content="T1 팬들을 위한 미니게임 허브">
     <!-- 글씨가 써진 깔끔한 다크/레드 테마 이미지로 교체! -->
     <meta property="og:image" content="https://placehold.co/1200x630/050505/e2012d/png?text=T-MILY+ZONE">
     <meta property="og:type" content="website">
@@ -326,8 +326,8 @@
         .teemo-time-btns { display: flex; gap: 10px; }
         .teemo-btn { background: #2d8a2d; border: none; color: white; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
         .teemo-btn:hover { background: #4a9e4a; transform: translateY(-2px); }
-        .teemo-result-img { width: 100px; height: 100px; object-fit: contain; margin: 0 auto 10px; display: block; }
-        .teemo-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 0.95rem; word-break: keep-all; margin-bottom: 15px; text-align: center; }
+        .teemo-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+        .teemo-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 20px; text-align: center; }
 
         /* ---------------- 무빙 훈련 스타일 ---------------- */
         #dodge-modal .modal-box { border-color: #b366ff; }
@@ -384,7 +384,7 @@
     <div class="modal-overlay" id="draw-modal">
         <div class="modal-box">
             <div class="modal-title">T1 LOGO TEST</div>
-            <p style="font-size: 0.85rem; color: #ffaa00; margin: 0; font-weight: bold;">(난이도 8% 상승 패치! 다시 빡세졌다🔥)</p>
+            <p style="font-size: 0.85rem; color: #ffaa00; margin: 0; font-weight: bold;">T1 로고 그리기</p>
             <div class="canvas-container">
                 <canvas id="bg-canvas" width="300" height="200"></canvas>
                 <canvas id="draw-canvas" width="300" height="200"></canvas>
@@ -411,7 +411,7 @@
             </div>
             <div class="predict-step">
                 <p>오늘의 경기 예측</p>
-                <button class="simulate-btn" id="start-simulate">T1 서커스 결과 보기</button>
+                <button class="simulate-btn" id="start-simulate">T1 후이팅!</button>
             </div>
             <div id="predict-final-result" class="predict-final-result" style="display: none;">
                 <p class="prediction-text" id="prediction-msg">결과 텍스트</p>
@@ -439,7 +439,7 @@
                         </div>
                     </div>
                     <div id="teemo-result-overlay" class="teemo-overlay" style="display: none;">
-                        <img src="" alt="결과 이미지" class="teemo-result-img" id="teemo-result-img">
+                        <div class="teemo-result-score" id="teemo-result-score">0 HIT</div>
                         <p class="teemo-result-msg" id="teemo-result-msg">결과 멘트</p>
                         <button class="teemo-btn" id="restart-teemo-btn">다시 하기</button>
                     </div>
@@ -453,7 +453,7 @@
     <div class="modal-overlay" id="dodge-modal">
         <div class="modal-box">
             <div class="dodge-title">무빙 훈련</div>
-            <p style="font-size:0.85rem; color:#ccc; margin:0;">손가락/마우스로 투사체를 끝까지 피하세요!</p>
+            <p style="font-size:0.85rem; color:#ccc; margin:0;">손가락으로 투사체를 끝까지 피하세요!</p>
             
             <div class="dodge-canvas-container">
                 <canvas id="dodge-game-canvas" width="300" height="300"></canvas>
@@ -650,10 +650,10 @@
     <script>
         const texts = [
             "\"모든 길은 결국, 저를 통합니다.\"",
-            "\"저를 넘어뜨릴 순 있어도 무너뜨릴 순 없습니다.\"",
-            "\"네 번째 우승은 우리 팀원들을 위한 것입니다.\"",
-            "\"우승은 어제 내린 눈이다.\"",
-            "\"T1은 언제나 증명하는 자리입니다.\"",
+            "\"가장 높은 산, 가장 긴 강.\"",
+            "\"다섯 번째 우승은 여러분을 위한 것입니다.\"",
+            "\"T1은 과거, 현재, 미래다. 새로운 시대, 변함없는 제국.\"",
+            "\"가장 예쁜 꽃은 우여곡절 끝에 피는 꽂.\"",
             "\"팬분들이 없다면 제가 이 자리에 있을 이유도 없습니다.\""
         ];
         
@@ -862,8 +862,8 @@
             if (targetPixels === 0) return;
 
             let coverage = (hitPixels / targetPixels) * 100;
-            let penalty = (overdrawPixels / targetPixels) * 110; 
-            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 2.0) - penalty)));
+            let penalty = (overdrawPixels / targetPixels) * 120; 
+            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 1.5) - penalty)));
 
             let msg = ""; let color = "#fff";
 
@@ -913,7 +913,7 @@
 
             if (wins === targetWins) { 
                 borderColor = "var(--t1-red)";
-                if (seqStr === '승승') finalMsg = "이것이 V6의 품격! 서커스 대개장하며 깔끔한 2:0 승리 🎪";
+                if (seqStr === '승승') finalMsg = "이것이 V6의 품격! 서커스 개장하며 깔끔한 2:0 승리 🎪";
                 else if (seqStr === '패승승') finalMsg = "1세트 줘도 돼~ 짜릿한 패승승 역전승 🔥";
                 else if (seqStr === '승패승') finalMsg = "승패승? 오히려 좋아! 티밀리 심장 쫄깃해지는 꽉 찬 승리 💦";
                 else if (seqStr === '승승승') finalMsg = "압도적인 무력! '모든 길은 결국 T1을 통한다' 3:0 압살 👑";
@@ -965,15 +965,6 @@
         const imgMushroom = new Image();
         imgMushroom.crossOrigin = "Anonymous";
         imgMushroom.src = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/TeemoRCast.png"; 
-
-        // 100% 안전한 라이엇 공식 챔피언 아이콘 & T1 로고 사용! (엑박 원천 차단)
-        const resultImages = {
-            terrible: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Amumu.png", // 아무무
-            notBad: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Rammus.png", // 람머스
-            average: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Teemo.png",  // 티모
-            good: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/LeeSin.png",   // 리신
-            best: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/T1_logo.svg/512px-T1_logo.svg.png" // T1 로고
-        };
 
         let isTeemoPlaying = false;
         let teemoScore = 0;
@@ -1055,30 +1046,33 @@
             
             if(showResult) {
                 let normalizedScore = teemoScore * (30 / teemoTotalTime);
-                let imgUrl = "";
                 let msg = "";
+                let color = "";
                 
-                // 난이도 3배 떡상! 등급 컷 대폭 상향 (기존 25, 50, 80, 110 -> 75, 150, 240, 330)
+                // 점수별 찰진 멘트 & 컬러 텍스트 지정!
                 if (normalizedScore < 75) { 
-                    imgUrl = resultImages.terrible;
-                    msg = "이거 완전 버그다모!! (아무무처럼 광광 우럭따 😭)";
+                    msg = "이거 완전 버그다모!!<br><span style='font-size:0.85rem; color:#aaa;'>눈 감고 한 거 아니지? (머쓱)</span>";
+                    color = "#ccc";
                 } else if (normalizedScore < 150) { 
-                    imgUrl = resultImages.notBad;
-                    msg = "어어? 쪼오끔 아쉽다 그치? (그래도 람머스처럼 오케이.. 🐢)";
+                    msg = "어어? 쪼오끔 아쉽다 그치?<br><span style='font-size:0.85rem; color:#aaa;'>그래도 뭐 나쁘지 않다모~</span>";
+                    color = "#00ff00";
                 } else if (normalizedScore < 240) { 
-                    imgUrl = resultImages.average;
-                    msg = "오 쫌 치네? 운타라식 안정적인 버섯 파밍! 🍄";
+                    msg = "오 쫌 치네?<br><span style='font-size:0.85rem; color:#aaa;'>운타라식 안정적인 버섯 파밍! 🍄</span>";
+                    color = "#ffaa00";
                 } else if (normalizedScore < 330) { 
-                    imgUrl = resultImages.good;
-                    msg = "와 대박인데?! 오너 리신급 미친 피지컬 인정! ⚡";
+                    msg = "와 대박인데?!<br><span style='font-size:0.85rem; color:#aaa;'>피지컬 완전 폼 미쳤다모!</span>";
+                    color = "#ffcc00";
                 } else { 
-                    imgUrl = resultImages.best;
-                    msg = "아니 진짜 미쳤다 ㅋㅋ 당신을 진정한 T1 성골 유스로 임명합니다!! 👑";
+                    msg = "아니 진짜 미쳤다 ㅋㅋ<br><span style='font-size:0.85rem; color:#aaa;'>이 정도면 프로게이머다모!! 👑</span>";
+                    color = "#e2012d";
                 }
 
-                teemoResultImg.src = imgUrl;
-                teemoResultMsg.innerText = msg;
-                teemoResultOverlay.style.display = 'flex';
+                const scoreDisplay = document.getElementById('teemo-result-score');
+                scoreDisplay.innerText = teemoScore + "개 획득!";
+                scoreDisplay.style.color = color;
+
+                document.getElementById('teemo-result-msg').innerHTML = msg;
+                document.getElementById('teemo-result-overlay').style.display = 'flex';
             }
         }
 
@@ -1216,7 +1210,7 @@
             player.x = 150; player.y = 150;
             enemies = [];
             dodgeScoreEl.innerText = "0.00초";
-            dodgeResultMsg.innerHTML = "손가락(마우스)으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
+            dodgeResultMsg.innerHTML = "손가락으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
             dodgeResultMsg.style.color = "#ccc";
             dodgeStartBtn.style.display = "block";
             dodgeStartBtn.innerText = "훈련 시작";
