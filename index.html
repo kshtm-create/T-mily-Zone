@@ -985,8 +985,8 @@
         let teemo = {
             x: 120, 
             y: 230, 
-            width: 60,
-            height: 60
+            width: 50,
+            height: 50
         };
 
         openTeemoBtn.addEventListener('click', () => {
@@ -1047,31 +1047,49 @@
             requestAnimationFrame(updateTeemoGame);
         }
 
-        function endTeemoGame(showResult) {
+function endTeemoGame(showResult) {
             isTeemoPlaying = false;
             cancelAnimationFrame(teemoGameLoop);
             clearInterval(teemoTimerInterval);
             
             if(showResult) {
-                let normalizedScore = teemoScore * (30 / teemoTotalTime);
                 let imgUrl = "";
                 let msg = "";
                 
-                if (normalizedScore < 20) { 
-                    imgUrl = resultImages.terrible;
-                    msg = "이거 완전 버그다모!! 눈 감고 한 거 아니지? (머쓱)";
-                } else if (normalizedScore < 40) { 
-                    imgUrl = resultImages.notBad;
-                    msg = "어어? 쪼오끔 아쉽다 그치? 그래도 뭐 나쁘지 않다모~";
-                } else if (normalizedScore < 70) { 
-                    imgUrl = resultImages.average;
-                    msg = "오 쫌 치네? 운타라식 안정적인 버섯 파밍!";
-                } else if (normalizedScore < 100) { 
-                    imgUrl = resultImages.good;
-                    msg = "와 대박인데?! 피지컬 완전 폼 미쳤다모!";
-                } else { 
-                    imgUrl = resultImages.best;
-                    msg = "아니 진짜 미쳤다 ㅋㅋ 이 정도면 프로게이머다모!!";
+                // 시간별(10초/30초)로 점수 컷과 멘트를 완전히 분리!
+                if (teemoTotalTime === 10) {
+                    // 10초 모드 전용 로직
+                    if (teemoScore < 10) { 
+                        imgUrl = resultImages.terrible;
+                        msg = "[10초 모드] 집중력 무슨 일이야모! 손가락 스트레칭 좀 하고 오라모! 🍄";
+                    } else if (teemoScore < 20) { 
+                        imgUrl = resultImages.notBad;
+                        msg = "[10초 모드] 흠~ 10초 치고는 무난하다모! 나쁘지 않은 솜씨! 👍";
+                    } else if (teemoScore < 30) { 
+                        imgUrl = resultImages.good;
+                        msg = "[10초 모드] 오! 짧은 시간에 이 정도 파밍력? 피지컬 좋다모! 🔥";
+                    } else { 
+                        imgUrl = resultImages.best;
+                        msg = "[10초 모드] 미친 반응속도! 10초 만에 버섯밭을 싹쓸이했다모!! 대상혁급 피지컬 👑";
+                    }
+                } else {
+                    // 30초 모드 전용 로직 (기존 점수대 사용)
+                    if (teemoScore < 20) { 
+                        imgUrl = resultImages.terrible;
+                        msg = "[30초 모드] 이거 완전 버그다모!! 눈 감고 한 거 아니지? (머쓱) 💦";
+                    } else if (teemoScore < 40) { 
+                        imgUrl = resultImages.notBad;
+                        msg = "[30초 모드] 어어? 쪼오끔 아쉽다 그치? 그래도 뭐 나쁘지 않다모~ 😅";
+                    } else if (teemoScore < 70) { 
+                        imgUrl = resultImages.average;
+                        msg = "[30초 모드] 오 쫌 치네? 운타라식 안정적인 버섯 파밍! 🍄";
+                    } else if (teemoScore < 120) { 
+                        imgUrl = resultImages.good;
+                        msg = "[30초 모드] 와 대박인데?! 30초 동안 집중력 완전 폼 미쳤다모! 👏";
+                    } else { 
+                        imgUrl = resultImages.best;
+                        msg = "[30초 모드] 아니 진짜 미쳤다 ㅋㅋ 이 정도면 프로게이머다모!! 🏆";
+                    }
                 }
 
                 teemoResultImg.src = imgUrl;
@@ -1212,7 +1230,7 @@
             player.x = 150; player.y = 150;
             enemies = [];
             dodgeScoreEl.innerText = "0.00초";
-            dodgeResultMsg.innerHTML = "손가락(마우스)으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
+            dodgeResultMsg.innerHTML = "손가락으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
             dodgeResultMsg.style.color = "#ccc";
             dodgeStartBtn.style.display = "block";
             dodgeStartBtn.innerText = "훈련 시작";
