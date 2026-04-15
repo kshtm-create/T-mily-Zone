@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>티밀리존 (T-mily Zone)</title>
+    
+    <!-- 카카오톡, 디스코드 등 외부 링크 공유 시 보이는 미리보기 (OG 태그) -->
+    <meta property="og:title" content="🔥 티밀리존 (T-mily Zone)">
+    <meta property="og:description" content="T1 팬들을 위한 커맨드 센터 & 미니게임 허브">
+    <!-- 글씨가 써진 깔끔한 다크/레드 테마 이미지로 교체! -->
+    <meta property="og:image" content="https://placehold.co/1200x630/050505/e2012d/png?text=T-MILY+ZONE">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --t1-red: #e2012d;
+            --t1-red-glow: rgba(226, 1, 45, 0.6);
+            --bg-color: #050505; 
+            --grid-color: rgba(210, 210, 215, 0.04); 
+            --silver-accent: #d4d4d8; 
+            --card-bg: rgba(15, 15, 18, 0.85); 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'Orbitron', 'Noto Sans KR', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 2rem 0;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px),
+                radial-gradient(circle at 50% 0%, #1e1e24 0%, var(--bg-color) 80%);
+            background-size: 30px 30px, 30px 30px, 100% 100%;
+            cursor: crosshair;
+        }
+
+        .screen-border {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            border: 3px solid var(--t1-red);
+            box-shadow: inset 0 0 30px var(--t1-red-glow), 0 0 20px var(--t1-red-glow);
+            z-index: 90;
+            pointer-events: none;
+        }
+
+        .screen-border::before, .screen-border::after {
+            content: ''; position: absolute; width: 30px; height: 30px; border: 3px solid var(--silver-accent); 
+        }
+        .screen-border::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .screen-border::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+        .hud-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px dashed var(--t1-red);
+            padding-bottom: 1rem;
+        }
+
+        .logo {
+            width: 140px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px var(--t1-red));
+            animation: glitch-anim 3s infinite;
+            cursor: pointer;
+        }
+
+        .stars {
+            color: var(--t1-red);
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px var(--t1-red);
+        }
+        .star-years {
+            font-size: 0.75rem;
+            color: #888;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .narrative-box {
+            min-height: 90px;
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: rgba(226, 1, 45, 0.08);
+            border-left: 4px solid var(--t1-red);
+            font-family: 'Noto Sans KR', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #eee;
+            word-break: keep-all;
+        }
+
+        /* 메인 액션 버튼 그룹 */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 0 auto 2rem auto;
+            width: 100%; 
+        }
+
+        .gacha-btn {
+            position: relative; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 60px;
+            padding: 0.5rem; 
+            background: linear-gradient(90deg, #8b0000, var(--t1-red));
+            color: #fff;
+            font-family: 'Orbitron', 'Noto Sans KR', sans-serif;
+            font-weight: 700; 
+            font-size: 0.8rem; 
+            letter-spacing: 0px; 
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            word-break: keep-all;
+            line-height: 1.3;
+        }
+
+        .gacha-btn:hover {
+            transform: scale(1.05);
+            background: #fff;
+            color: var(--t1-red);
+            border-color: var(--t1-red);
+            z-index: 2;
+        }
+
+        .draw-game-btn { background: linear-gradient(90deg, #111, #222); border-color: #444; }
+        .draw-game-btn:hover { background: #fff; color: #000; border-color: #fff; }
+
+        .predict-game-btn { background: linear-gradient(90deg, #4b0000, #8b0000); border-color: #777; }
+        .predict-game-btn:hover { background: #ffcc00; color: #000; border-color: #ffcc00; }
+
+        .teemo-game-btn { background: linear-gradient(90deg, #1b4d1b, #2d8a2d); border-color: #4a9e4a; }
+        .teemo-game-btn:hover { background: #73d073; color: #000; border-color: #73d073; }
+
+        .dodge-game-btn { background: linear-gradient(90deg, #331f4d, #4c2d73); border-color: #7a4aab; }
+        .dodge-game-btn:hover { background: #b366ff; color: #000; border-color: #b366ff; }
+
+        .clicker-game-btn { background: linear-gradient(90deg, #4d3f00, #806600); border-color: #b38f00; }
+        .clicker-game-btn:hover { background: #ffcc00; color: #000; border-color: #ffcc00; }
+
+        /* 링크 리스트 */
+        .quest-list {
+            display: flex;
+            flex-wrap: nowrap; 
+            justify-content: flex-start;
+            align-items: center;
+            gap: 1rem; 
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem 2rem 1rem; 
+            overflow-x: auto; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            scroll-snap-type: x mandatory; 
+        }
+        .quest-list::-webkit-scrollbar { display: none; }
+        .quest-item {
+            position: relative; flex: 0 0 auto; min-width: 100px; padding: 1rem 1.5rem; background: transparent; border: none;
+            color: var(--silver-accent); text-decoration: none; transition: all 0.3s ease; text-align: center; white-space: nowrap; scroll-snap-align: start; 
+        }
+        .quest-title { font-family: 'Noto Sans KR', sans-serif; font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; z-index: 2; margin-bottom: 0; transition: color 0.3s ease; }
+        .quest-item::after {
+            content: ''; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); width: 0; height: 2px;
+            background-color: #fff; transition: width 0.3s cubic-bezier(0.1, 1, 0.1, 1); z-index: 1;
+        }
+        .quest-item:hover, .quest-item:active { transform: translateY(-2px); }
+        .quest-item:hover::after, .quest-item:active::after { width: 80%; }
+        .quest-item:hover .quest-title, .quest-item:active .quest-title { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+
+        /* ---------------- T1 2026 로스터 섹션 ---------------- */
+        .roster-section { margin-top: 2rem; padding-top: 1rem; animation: fadeIn 1s ease forwards; }
+        .roster-title { text-align: center; font-family: 'Orbitron', sans-serif; color: var(--t1-red); font-size: 1.6rem; letter-spacing: 3px; margin-bottom: 1rem; text-shadow: 0 0 10px var(--t1-red-glow); font-weight: 900; }
+        .roster-subtitle { text-align: center; font-family: 'Orbitron', sans-serif; color: var(--silver-accent); font-size: 1.2rem; letter-spacing: 2px; margin: 3rem 0 1.5rem 0; font-weight: 700; border-bottom: 1px solid rgba(212, 212, 216, 0.2); padding-bottom: 0.5rem; }
+        .team-desc { text-align: center; font-size: 0.9rem; color: #bbb; line-height: 1.6; margin-bottom: 2.5rem; word-break: keep-all; padding: 0 1rem; }
+
+        .player-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+
+        .player-card {
+            background: var(--card-bg); border: 1px solid rgba(212, 212, 216, 0.15); padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); border-top: 4px solid var(--t1-red); border-radius: 0; display: flex; flex-direction: column; justify-content: flex-start;
+        }
+        .player-card:not(.meme-card):hover { border-color: var(--t1-red); transform: translateY(-3px); box-shadow: 0 5px 15px var(--t1-red-glow); background: rgba(226, 1, 45, 0.05); }
+
+        .meme-card { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+        .meme-card.active {
+            border-style: dashed; 
+            border-width: 4px;
+            border-radius: 20px; 
+            border-color: var(--t1-red); 
+            box-shadow: 0 8px 20px rgba(226, 1, 45, 0.25); 
+            background: rgba(226, 1, 45, 0.05);
+            transform: translateY(-5px); 
+        }
+
+        .player-img { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; margin-bottom: 1.2rem; background-color: #e4e4e4; border-bottom: 1px solid rgba(212, 212, 216, 0.2); }
+        .player-img img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+
+        .normal-img { opacity: 1; z-index: 2; }
+        .goofy-img { opacity: 0; z-index: 1; transform: scale(0.8) rotate(10deg); }
+
+        .player-card:not(.meme-card):hover .normal-img { transform: scale(1.05); }
+        .meme-card.active .normal-img { opacity: 0; transform: scale(1.2) rotate(-10deg); }
+        .meme-card.active .goofy-img { opacity: 1; transform: scale(1.05) rotate(0deg); }
+
+        .peyz-img .normal-img { transform: scale(0.85); transform-origin: bottom center; }
+        .meme-card.active .peyz-img .normal-img { transform: scale(0.85) rotate(-10deg); }
+        .meme-card.active .peyz-img .goofy-img { transform: scale(2.0) rotate(0deg); transform-origin: 0% 65%; object-position: 0% 65%; }
+
+        .doran-img .goofy-img { object-position: bottom center; transform-origin: bottom center; }
+        .meme-card.active .doran-img .goofy-img { transform: scale(1.05) rotate(0deg); }
+
+        .player-role { position: relative; z-index: 10; font-family: 'Orbitron', sans-serif; color: var(--t1-red); font-size: 0.85rem; font-weight: 900; margin-bottom: 0.4rem; letter-spacing: 2px; }
+        .player-name { position: relative; z-index: 10; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.6rem; display: flex; align-items: baseline; gap: 0.5rem; }
+        .player-name span { font-size: 0.9rem; color: #888; font-weight: 400; }
+        
+        .normal-desc { position: relative; z-index: 10; display: flex; flex-direction: column; gap: 10px; word-break: keep-all; }
+        .desc-highlight { font-size: 0.95rem; color: #fff; font-weight: 700; line-height: 1.4; border-bottom: 1px dashed rgba(212, 212, 216, 0.3); padding-bottom: 10px; }
+        .desc-highlight strong { font-weight: 900; text-shadow: 0 0 3px rgba(255,255,255,0.3); }
+        .desc-detail { font-size: 0.85rem; color: #999; line-height: 1.5; }
+        
+        .goofy-desc { position: relative; z-index: 10; display: none; font-size: 0.9rem; color: #ffd700; font-weight: 700; line-height: 1.5; word-break: keep-all; }
+        
+        .team-desc strong { color: var(--silver-accent); font-weight: 900; text-shadow: 0 0 5px rgba(212,212,216,0.3); }
+
+        .meme-card.active .normal-desc { display: none; }
+        .meme-card.active .goofy-desc { display: block; animation: fadeIn 0.3s ease; }
+
+        .faker-solo { display: flex; justify-content: center; margin-bottom: 2rem; width: 100%; }
+        
+        .faker-special { width: 100%; max-width: 280px; background: var(--card-bg); border: 1px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); position: relative; overflow: hidden; border-top: 4px solid #ffd700; display: flex; flex-direction: column; justify-content: flex-start; padding: 1.5rem; }
+        .faker-special .player-img { width: 100%; aspect-ratio: 1; margin-bottom: 1.2rem; background: #111; border-bottom: 1px solid #ffd700; border-radius: 0; flex-shrink: initial; height: auto; }
+        .faker-special .decorations { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; z-index: 10; filter: drop-shadow(0 0 10px #ffd700); letter-spacing: 5px; }
+        .faker-special.active { border-color: #ffd700 !important; border-style: dashed !important; border-width: 4px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.8) !important; background: var(--card-bg) !important; transform: translateY(-5px); }
+
+        /* ---------------- 모달 (팝업창) 공통 스타일 ---------------- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: #111; border: 3px solid var(--t1-red); border-radius: 10px; padding: 2rem;
+            width: 90%; max-width: 350px; text-align: center;
+            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-title { font-family: 'Orbitron', sans-serif; color: var(--t1-red); font-size: 1.5rem; font-weight: 900; }
+        .close-btn {
+            background: #333; color: #fff; border: none; padding: 0.8rem 2rem;
+            font-family: 'Orbitron', sans-serif; font-weight: bold; cursor: pointer;
+            transition: background 0.2s; border-radius: 5px; margin-top: 10px;
+        }
+        .close-btn:hover { background: var(--t1-red); }
+
+        /* 가챠 특정 스타일 */
+        .gacha-img-container { width: 200px; height: 200px; margin: 0 auto; border: 2px solid var(--silver-accent); overflow: hidden; background: #222; }
+        .gacha-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .gacha-name { font-size: 1.5rem; font-weight: 900; }
+        .gacha-msg { color: #ffd700; font-size: 0.95rem; line-height: 1.4; word-break: keep-all; height: 3rem; }
+        .rolling { animation: flash 0.1s infinite alternate; }
+
+        /* ---------------- 그리기 미니게임 스타일 ---------------- */
+        .canvas-container { position: relative; width: 100%; height: 200px; background: #111; border: 2px dashed #555; border-radius: 5px; overflow: hidden; }
+        #bg-canvas, #draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        #draw-canvas { cursor: crosshair; touch-action: none; }
+        .draw-actions { display: flex; gap: 0.5rem; justify-content: center; }
+        .draw-btn-small { flex: 1; padding: 0.8rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border: none; border-radius: 5px; cursor: pointer; color: #fff; transition: all 0.2s; }
+        .btn-clear { background: #444; } .btn-clear:hover { background: #666; }
+        .btn-submit { background: var(--t1-red); } .btn-submit:hover { background: #ff3355; }
+        .draw-result-text { font-size: 0.95rem; font-weight: bold; min-height: 2.5rem; color: #ccc; word-break: keep-all; }
+
+        /* ---------------- 경기 예측하기 스타일 ---------------- */
+        .predict-step { margin-bottom: 1rem; }
+        .predict-step p { font-size: 0.9rem; font-weight: bold; color: #ccc; margin-bottom: 0.8rem; letter-spacing: 1px; }
+        .format-options { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+        .format-btn { flex: 1; padding: 0.8rem; background: #222; border: 2px solid #444; color: #aaa; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1rem; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
+        .format-btn.active { background: var(--silver-accent); border-color: var(--silver-accent); color: #000; }
+        .simulate-btn { width: 100%; padding: 1rem; border: none; border-radius: 5px; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.1rem; background: linear-gradient(90deg, #8b0000, var(--t1-red)); color: #fff; cursor: pointer; transition: all 0.2s; }
+        .simulate-btn:hover { background: #ff3355; transform: translateY(-2px); }
+        .predict-final-result { margin-top: 1rem; padding: 1.5rem 1rem; background: rgba(255,255,255,0.05); border-radius: 5px; border-left: 4px solid var(--t1-red); animation: fadeIn 0.5s ease; }
+        .prediction-text { font-size: 1rem; font-weight: 900; line-height: 1.5; color: #fff; word-break: keep-all; }
+        .set-sequence { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+        .set-badge { padding: 4px 10px; border-radius: 4px; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 0.85rem; letter-spacing: 1px; }
+        .set-win { background: var(--t1-red); color: white; }
+        .set-lose { background: #333; color: #aaa; border: 1px solid #555; }
+
+        /* ---------------- 티모 미니게임 스타일 ---------------- */
+        #teemo-modal .modal-box { border-color: #2d8a2d; }
+        .teemo-title { color: #4a9e4a; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 10px; }
+        .teemo-stats { display: space-between; font-weight: bold; color: #ccc; margin-bottom: 10px; padding: 0 10px; }
+        .teemo-canvas-container { position: relative; width: 100%; height: 300px; background: linear-gradient(135deg, #1e3c1e 0%, #0a140a 100%); border: 2px solid #2d8a2d; border-radius: 5px; overflow: hidden; touch-action: none; }
+        #teemo-game-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+        .teemo-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 15px; animation: fadeIn 0.3s ease; }
+        .teemo-overlay-title { color: #fff; font-weight: 900; margin-bottom: 15px; font-size: 1.1rem; }
+        .teemo-time-btns { display: flex; gap: 10px; }
+        .teemo-btn { background: #2d8a2d; border: none; color: white; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
+        .teemo-btn:hover { background: #4a9e4a; transform: translateY(-2px); }
+        .teemo-result-img { width: 100px; height: 100px; object-fit: contain; margin: 0 auto 10px; display: block; }
+        .teemo-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 0.95rem; word-break: keep-all; margin-bottom: 15px; text-align: center; }
+
+        /* ---------------- 무빙 훈련 스타일 ---------------- */
+        #dodge-modal .modal-box { border-color: #b366ff; }
+        .dodge-title { color: #b366ff; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 5px; }
+        .dodge-canvas-container { position: relative; width: 100%; height: 300px; background: #111; border: 2px solid #b366ff; border-radius: 5px; margin: 15px 0; overflow: hidden; touch-action: none; cursor: crosshair; }
+        #dodge-game-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+        .dodge-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 15px; transition: background 0.3s ease; }
+        .dodge-score-text { font-size: 1.5rem; font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 900; margin-bottom: 10px; }
+        .dodge-start-btn { background: linear-gradient(90deg, #7a4aab, #b366ff); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+        .dodge-start-btn:hover { background: #fff; transform: translateY(-2px); }
+        .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.5; font-size: 1rem; word-break: keep-all; text-align: center; }
+
+        /* ---------------- 점멸 피지컬 훈련 (광클 미니게임) 스타일 ---------------- */
+        #clicker-modal .modal-box { border-color: #ffcc00; max-width: 400px; }
+        .clicker-title { color: #ffcc00; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 5px; }
+        .clicker-stats { font-size: 1.2rem; font-family: 'Orbitron', sans-serif; color: #fff; margin-bottom: 15px; display: flex; justify-content: space-between; padding: 0 10px; }
+        .flash-target {
+            width: 120px; height: 120px; margin: 20px auto;
+            border-radius: 15px; border: 4px solid #ffcc00; box-shadow: 0 0 30px rgba(255, 204, 0, 0.6);
+            cursor: pointer; transition: transform 0.05s;
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
+            user-select: none; -webkit-user-select: none; touch-action: manipulation;
+        }
+        .flash-target img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .flash-target:active { transform: scale(0.9); box-shadow: 0 0 50px #ffcc00; }
+        .clicker-start-btn { background: linear-gradient(90deg, #b38f00, #ffcc00); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 10px; }
+        .clicker-start-btn:hover { background: #fff; color: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4); }
+        .clicker-result-msg { color: #ffcc00; font-weight: bold; margin-top: 15px; font-size: 1rem; word-break: keep-all; line-height: 1.5; display: none; }
+
+        @keyframes flash { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        @media (min-width: 600px) { .quest-list { justify-content: center; } }
+    </style>
+</head>
+<body>
+    <div class="screen-border"></div>
+
+    <!-- 가챠 팝업 모달 -->
+    <div class="modal-overlay" id="gacha-modal">
+        <div class="modal-box">
+            <div class="modal-title">YOUR PARTNER</div>
+            <div class="gacha-img-container" id="gacha-frame">
+                <img src="" alt="?" class="gacha-img" id="gacha-img">
+            </div>
+            <div class="gacha-name" id="gacha-name">???</div>
+            <div class="gacha-msg" id="gacha-msg">오늘의 파트너를 뽑고 있습니다...</div>
+            <button class="close-btn" id="close-gacha-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 그리기 미니게임 팝업 모달 -->
+    <div class="modal-overlay" id="draw-modal">
+        <div class="modal-box">
+            <div class="modal-title">T1 LOGO TEST</div>
+            <p style="font-size: 0.85rem; color: #ffaa00; margin: 0; font-weight: bold;">(난이도 8% 상승 패치! 다시 빡세졌다🔥)</p>
+            <div class="canvas-container">
+                <canvas id="bg-canvas" width="300" height="200"></canvas>
+                <canvas id="draw-canvas" width="300" height="200"></canvas>
+            </div>
+            <div class="draw-result-text" id="draw-result">티밀리 실력 좀 볼까?</div>
+            <div class="draw-actions">
+                <button class="draw-btn-small btn-clear" id="clear-canvas">다시 그리기</button>
+                <button class="draw-btn-small btn-submit" id="submit-canvas">결과 확인</button>
+            </div>
+            <button class="close-btn" id="close-draw-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 예측하기 팝업 모달 -->
+    <div class="modal-overlay" id="predict-modal">
+        <div class="modal-box">
+            <div class="modal-title">MATCH PREDICT</div>
+            <div class="predict-step">
+                <p>오늘 경기는 몇 꽉?</p>
+                <div class="format-options">
+                    <button class="format-btn active" data-format="bo3">Bo 3</button>
+                    <button class="format-btn" data-format="bo5">Bo 5</button>
+                </div>
+            </div>
+            <div class="predict-step">
+                <p>오늘의 경기 예측</p>
+                <button class="simulate-btn" id="start-simulate">T1 서커스 결과 보기</button>
+            </div>
+            <div id="predict-final-result" class="predict-final-result" style="display: none;">
+                <p class="prediction-text" id="prediction-msg">결과 텍스트</p>
+            </div>
+            <button class="close-btn" id="close-predict-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 티모 버섯 받기 게임 모달 -->
+    <div class="modal-overlay" id="teemo-modal">
+        <div class="modal-box">
+            <div class="teemo-title">티모 버섯 받기</div>
+            <div id="teemo-game-area">
+                <div class="teemo-stats">
+                    <span id="teemo-time">시간: 0초</span>
+                    <span id="teemo-score" style="color: #73d073;">점수: 0</span>
+                </div>
+                <div class="teemo-canvas-container">
+                    <canvas id="teemo-game-canvas" width="300" height="300"></canvas>
+                    <div id="teemo-start-overlay" class="teemo-overlay">
+                        <p class="teemo-overlay-title">플레이 시간을 선택하세요!</p>
+                        <div class="teemo-time-btns">
+                            <button class="teemo-btn time-select-btn" data-time="10">10초</button>
+                            <button class="teemo-btn time-select-btn" data-time="30">30초</button>
+                        </div>
+                    </div>
+                    <div id="teemo-result-overlay" class="teemo-overlay" style="display: none;">
+                        <img src="" alt="결과 이미지" class="teemo-result-img" id="teemo-result-img">
+                        <p class="teemo-result-msg" id="teemo-result-msg">결과 멘트</p>
+                        <button class="teemo-btn" id="restart-teemo-btn">다시 하기</button>
+                    </div>
+                </div>
+            </div>
+            <button class="close-btn" id="close-teemo-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 무빙 훈련 팝업 모달 -->
+    <div class="modal-overlay" id="dodge-modal">
+        <div class="modal-box">
+            <div class="dodge-title">무빙 훈련</div>
+            <p style="font-size:0.85rem; color:#ccc; margin:0;">손가락/마우스로 투사체를 끝까지 피하세요!</p>
+            
+            <div class="dodge-canvas-container">
+                <canvas id="dodge-game-canvas" width="300" height="300"></canvas>
+                
+                <div id="dodge-overlay" class="dodge-overlay">
+                    <div class="dodge-score-text" id="dodge-score">0.00초</div>
+                    <div class="dodge-result-msg" id="dodge-result-msg">생존 시간이 곧 당신의 티어입니다.</div>
+                    <button class="dodge-start-btn" id="start-dodge-btn">훈련 시작</button>
+                </div>
+            </div>
+            
+            <button class="close-btn" id="close-dodge-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 점멸 피지컬 훈련 (광클 미니게임) -->
+    <div class="modal-overlay" id="clicker-modal">
+        <div class="modal-box">
+            <div class="clicker-title">점멸 피지컬 훈련</div>
+            <p style="font-size:0.85rem; color:#ccc; margin:0;">10초 동안 점멸(F)을 미친 듯이 연타하세요!</p>
+            
+            <div class="clicker-stats">
+                <span id="clicker-time-text">10.00 초</span>
+                <span id="clicker-score-text" style="color: #ffcc00;">0 HIT</span>
+            </div>
+            
+            <div class="flash-target" id="flash-target" style="pointer-events: none; filter: grayscale(100%);">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/SummonerFlash.png" alt="Flash">
+            </div>
+
+            <button class="clicker-start-btn" id="start-clicker-btn">훈련 시작</button>
+            <p id="clicker-result-msg" class="clicker-result-msg"></p>
+            
+            <button class="close-btn" id="close-clicker-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <div class="hud-container">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/T1_logo.svg/1200px-T1_logo.svg.png" alt="T1 Logo" class="logo" onclick="alert('V6 달성 완료! 숨겨진 미션 준비 중...');">
+            <div class="stars">★★★★★★</div>
+            <div class="star-years">13' 15' 16' 23' 24' 25'</div>
+        </div>
+
+        <div class="narrative-box">
+            <span id="typed-text"></span><span class="cursor"></span>
+        </div>
+
+        <!-- 메인 액션 버튼 그룹 -->
+        <div class="action-buttons">
+            <button class="gacha-btn" id="start-gacha">
+                <span>직관 파트너 뽑기</span>
+            </button>
+            <button class="gacha-btn draw-game-btn" id="start-draw">
+                <span>T1 로고 그리기</span>
+            </button>
+            <button class="gacha-btn predict-game-btn" id="start-predict">
+                <span>오늘 경기 예측</span>
+            </button>
+            <button class="gacha-btn teemo-game-btn" id="open-teemo-modal">
+                <span>티모 버섯 받기</span>
+            </button>
+            <button class="gacha-btn dodge-game-btn" id="open-dodge-modal">
+                <span>무빙 훈련</span>
+            </button>
+            <button class="gacha-btn clicker-game-btn" id="open-clicker-modal">
+                <span>점멸 피지컬 훈련</span>
+            </button>
+        </div>
+
+        <div class="quest-list">
+            <a href="https://www.t1.gg/" target="_blank" class="quest-item">
+                <span class="quest-title">T1 홈페이지</span>
+            </a>
+            <a href="https://shop-t1.gg/?srsltid=AfmBOordyhcZTukTK0zOk6NfWxmfxS9G5VR0e8hCLD8P9XcdLbm3_WGi" target="_blank" class="quest-item">
+                <span class="quest-title">T1 샵</span>
+            </a>
+            <a href="https://www.instagram.com/t1lol/" target="_blank" class="quest-item">
+                <span class="quest-title">인스타그램</span>
+            </a>
+            <a href="https://t1.fan/" target="_blank" class="quest-item">
+                <span class="quest-title">멤버십</span>
+            </a>
+            <a href="https://www.youtube.com/@SKTT1" target="_blank" class="quest-item">
+                <span class="quest-title">유튜브</span>
+            </a>
+        </div>
+
+        <div class="roster-section">
+            <h2 class="roster-title">T1 2026 ROSTER</h2>
+            <p class="team-desc">e스포츠의 살아있는 역사, V6 세계 최고의 팀 <br><strong>결국 모든 길은 T1을 통한다</strong></p>
+            
+            <div class="faker-solo">
+                <div class="player-card faker-special meme-card">
+                    <div class="decorations">👑🌹</div>
+                    <div class="player-img">
+                        <img src="https://i.namu.wiki/i/lXk-QGwNN1SozkiftTC4o-hyHa9TFic6zqSKOU_Pr0zm03WnqwNiV7a29-RRSK5NzizWKxkUlh5pQ0fxDjU3OA.webp" alt="Faker" class="normal-img">
+                        <img src="https://wsrv.nl/?url=i2.ruliweb.com/img/25/11/09/19a688f4c173a2202.jpg" alt="Faker Meme" class="goofy-img">
+                    </div>
+                    <div class="player-role" style="color: #ffd700;">CAPTAIN & MID</div>
+                    <div class="player-name">Faker <span>이상혁</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight"><strong>신은 존재하며 그는 T1에서 미드를 플레이한다</strong></span>
+                        <span class="desc-detail">위기의 순간마다 팀을 구원하는 영원한 불사대마왕</span>
+                    </div>
+                    <div class="goofy-desc">"우리가 왜 이상한 지 알아? 치약이 없어서 이가 상했어 (아악)"</div>
+                </div>
+            </div>
+
+            <div class="player-grid">
+                <div class="player-card meme-card">
+                    <div class="player-img doran-img">
+                        <img src="https://i.namu.wiki/i/8UxGPyA6XQRCDHZIRfZh0khEkYRf6ayPG8N1DMkuEyFsCCd4w7QYJm6t3ah8VHOBKfKPmbsEPdDkAorY_ox_QA.webp" alt="Doran" class="normal-img" style="object-position: center 40%;">
+                        <img src="https://wsrv.nl/?url=i2.ruliweb.com/img/25/11/09/19a67d7d26d4c4198.png" alt="Doran Meme" class="goofy-img">
+                    </div>
+                    <div class="player-role">TOP</div>
+                    <div class="player-name">Doran <span>최현준</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight">원딜 먹고 성장하는 진성 탑라이너 <strong>대황란</strong></span>
+                        <span class="desc-detail">"탑라인 밟지마라 더러운 발로" 예술같은 이니시로 한타를 파괴하는 탑 라인의 지배자</span>
+                    </div>
+                    <div class="goofy-desc">(눈 번뜩) 어? 저기 원딜? 원딜 발견!!! 우효오옷~</div>
+                </div>
+                <div class="player-card meme-card">
+                    <div class="player-img">
+                        <img src="https://i.namu.wiki/i/ddZFejge7MCfSWp_k4qGX0QOQJWYw_VtfTbvTPSc7BdFPv_bhCbBRWYICFXg1CvjXci9dFOkZGdtV07Pb-FhKw.webp" alt="Oner" class="normal-img">
+                        <img src="https://wsrv.nl/?url=i1.ruliweb.com/img/21/08/28/17b8be44b2d10c24c.jpg" alt="Oner Meme" class="goofy-img">
+                    </div>
+                    <div class="player-role">JUNGLE</div>
+                    <div class="player-name">Oner <span>문현준</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight">협곡에 울려 퍼지는 <strong>오창섭</strong></span>
+                        <span class="desc-detail">리신의 발차기처럼 날카로운 갱킹으로 T1의 심장 박동을 조율하는 든든한 정글러</span>
+                    </div>
+                    <div class="goofy-desc">오너가 가고 싶은 데로 간다! 박사박사 오너는 박사~♪</div>
+                </div>
+                <div class="player-card meme-card">
+                    <div class="player-img peyz-img">
+                        <img src="https://i.namu.wiki/i/no8hLombc8-ykbyRM0LIm8UyPXCxnJ33SvfYsirCjeQSjVBzDehNBEoVy8tW6oShWk5ngMgQhxW359uUgH4KzQ6CHzLYR7j-x3LMh24gUWbc_N6fyINkjI0uYDK62n9U7N4Bm9SL0Ssz8NLrBKxVxg.webp" alt="Peyz" class="normal-img">
+                        <img src="https://wsrv.nl/?url=upload3.inven.co.kr/upload/2025/12/18/bbs/i1464132534.jpg?MW=800" alt="Peyz Meme" class="goofy-img">
+                    </div>
+                    <div class="player-role">ADC</div>
+                    <div class="player-name">Peyz <span>김수환</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight">압도적인 무호흡 딜링 머신, <strong>넥스트 제너레이션</strong></span>
+                        <span class="desc-detail">천재적인 한타 포지셔닝으로 적을 쓸어 담는 T1의 핵심 원거리 딜러</span>
+                    </div>
+                    <div class="goofy-desc">... (아직 막내라 눈빛만 보내는 듯 하다)</div>
+                </div>
+                <div class="player-card meme-card">
+                    <div class="player-img">
+                        <img src="https://i.namu.wiki/i/zErJ7Bg3WoqD1ninHZtpupeyFRI73GLEOzXYa73D5ObTOASAb9_4hx7vbJoRwdKJ95Vs52k1pLojixqSaKdWvg.webp" alt="Keria" class="normal-img">
+                        <img src="https://wsrv.nl/?url=image.fmkorea.com/files/attach/new4/20241112/7687110740_14339012_7c77784d872a84c2676ca6e79d4fc56b.png" alt="Keria Meme" class="goofy-img">
+                    </div>
+                    <div class="player-role">SUPPORT</div>
+                    <div class="player-name">Keria <span>류민석</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight">협곡 전체를 지배하는 미친 크랙 플레이 <strong>역천괴</strong></span>
+                        <span class="desc-detail">서포터의 한계를 넘어 매 순간 서커스를 선보이는 천재 서포터</span>
+                    </div>
+                    <div class="goofy-desc">대황란!!! 대황너!!! 대상혁 ㅎㅎ 대수환!!</div>
+                </div>
+            </div>
+
+            <h3 class="roster-subtitle">COACHING STAFF</h3>
+            <div class="player-grid">
+                <div class="player-card">
+                    <div class="player-img">
+                        <img src="https://i.namu.wiki/i/uJ4LR4P9nGnpF8tgDUOAaICgdWr84bFvbMBjO9rn4fWtK7VXKQeI8LTXi6yCnI7OC6nk7ZAo_YLacChGwrFFezhAoLBqQu5HNJA0tInbQXgk078jFBcy7bjX_hdHixhRZjQs3kVGe9n35we9pj2hqw.webp" alt="Tom" class="normal-img">
+                    </div>
+                    <div class="player-role">HEAD COACH</div>
+                    <div class="player-name">Tom <span>임재현</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight">숨통을 조이는 신들린 밴픽 <strong>톰버지</strong></span>
+                        <span class="desc-detail">T1이라는 거대한 함대를 우승컵으로 이끄는 명장</span>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-img">
+                        <img src="https://i.namu.wiki/i/OuXyeF5h0CDveIm5uLpwwBn3a5jUtu-Ud58erTStMWhcuHd8AKuPQVRp6llp4PnEhV_lM5Ngd-eEmDAV_rDjZ6pp8ObvRFV_zV1Qfr1_aK2RKD-OGvo9BDEUnVn-yKQAcmx41VV7swDGKJJsKUbwRg.webp" alt="Mata" class="normal-img">
+                    </div>
+                    <div class="player-role">COACH</div>
+                    <div class="player-name">Mata <span>조세형</span></div>
+                    <div class="normal-desc">
+                        <span class="desc-highlight"><strong>시야의 마술사</strong>에서 T1의 든든한 조력자로!</span>
+                        <span class="desc-detail">디테일한 운영과 뇌지컬을 팀에 이식하는 레전드 코치</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const texts = [
+            "\"모든 길은 결국, 저를 통합니다.\"",
+            "\"저를 넘어뜨릴 순 있어도 무너뜨릴 순 없습니다.\"",
+            "\"네 번째 우승은 우리 팀원들을 위한 것입니다.\"",
+            "\"우승은 어제 내린 눈이다.\"",
+            "\"T1은 언제나 증명하는 자리입니다.\"",
+            "\"팬분들이 없다면 제가 이 자리에 있을 이유도 없습니다.\""
+        ];
+        
+        let textIndex = 0;
+        let charIndex = 0;
+        const typedTextElement = document.getElementById("typed-text");
+
+        function type() {
+            if (charIndex < texts[textIndex].length) {
+                typedTextElement.textContent += texts[textIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 40);
+            } else {
+                setTimeout(erase, 2500);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typedTextElement.textContent = texts[textIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 15);
+            } else {
+                textIndex++;
+                if (textIndex >= texts.length) textIndex = 0;
+                setTimeout(type, 500);
+            }
+        }
+
+        setTimeout(type, 1000);
+
+        const memeCards = document.querySelectorAll('.meme-card');
+        memeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // ---------------- 1. 가챠 시스템 ----------------
+        const players = [
+            { name: "Faker", img: "https://wsrv.nl/?url=i2.ruliweb.com/img/25/11/09/19a688f4c173a2202.jpg", msg: "👑 대상혁과 함께라면 패배는 거기까지! 오늘 직관 승률 100%!" },
+            { name: "Doran", img: "https://wsrv.nl/?url=i2.ruliweb.com/img/25/11/09/19a67d7d26d4c4198.png", msg: "🛡️ 도란과 함께 오늘 홈그라운드 꿀잼 직관 보장!" },
+            { name: "Oner", img: "https://wsrv.nl/?url=i1.ruliweb.com/img/21/08/28/17b8be44b2d10c24c.jpg", msg: "⚡ 오너 피지컬 발동! 오늘 당신의 직관 텐션 급상승!" },
+            { name: "Peyz", img: "https://wsrv.nl/?url=upload3.inven.co.kr/upload/2025/12/18/bbs/i1464132534.jpg?MW=800", msg: "🎯 T1의 막내 페이즈 등장! 마법 같은 펜타킬급 텐션으로 즐겨요!" },
+            { name: "Keria", img: "https://wsrv.nl/?url=image.fmkorea.com/files/attach/new4/20241112/7687110740_14339012_7c77784d872a84c2676ca6e79d4fc56b.png", msg: "👁️ 역천괴 케리아의 완벽한 설계! 오늘 직관 승리를 배달해 드립니다!" }
+        ];
+
+        const startBtn = document.getElementById('start-gacha');
+        const gachaModal = document.getElementById('gacha-modal');
+        const closeGachaBtn = document.getElementById('close-gacha-modal');
+        const gachaImg = document.getElementById('gacha-img');
+        const gachaName = document.getElementById('gacha-name');
+        const gachaMsg = document.getElementById('gacha-msg');
+        const gachaFrame = document.getElementById('gacha-frame');
+
+        let isRolling = false;
+
+        startBtn.addEventListener('click', () => {
+            if (isRolling) return;
+            isRolling = true;
+            gachaModal.classList.add('active');
+            gachaFrame.classList.add('rolling');
+            gachaName.textContent = "???";
+            gachaMsg.textContent = "두구두구두구...";
+            
+            let count = 0;
+            const rollInterval = setInterval(() => {
+                const randomPlayer = players[Math.floor(Math.random() * players.length)];
+                gachaImg.src = randomPlayer.img;
+                count++;
+                if (count > 20) {
+                    clearInterval(rollInterval);
+                    gachaFrame.classList.remove('rolling');
+                    const finalPlayer = players[Math.floor(Math.random() * players.length)];
+                    gachaImg.src = finalPlayer.img;
+                    gachaName.textContent = finalPlayer.name;
+                    gachaMsg.textContent = finalPlayer.msg;
+                    isRolling = false;
+                }
+            }, 100);
+        });
+        closeGachaBtn.addEventListener('click', () => gachaModal.classList.remove('active'));
+
+        // ---------------- 2. 그리기 미니게임 ----------------
+        const drawBtn = document.getElementById('start-draw');
+        const drawModal = document.getElementById('draw-modal');
+        const closeDrawBtn = document.getElementById('close-draw-modal');
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const canvas = document.getElementById('draw-canvas');
+        const ctx = canvas.getContext('2d');
+        const clearBtn = document.getElementById('clear-canvas');
+        const submitBtn = document.getElementById('submit-canvas');
+        const drawResult = document.getElementById('draw-result');
+
+        let isDrawing = false;
+        let isLogoLoaded = false;
+        
+        const targetLogo = new Image();
+        targetLogo.crossOrigin = "Anonymous";
+        targetLogo.src = "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/en/thumb/f/f9/T1_logo.svg/512px-T1_logo.svg.png";
+        
+        targetLogo.onload = () => {
+            isLogoLoaded = true;
+            if (drawModal.classList.contains('active')) initBgCanvas();
+        };
+
+        function safeDrawImage(c, img, x, y, w, h, fallbackText) {
+            if (img.complete && img.naturalWidth > 0) {
+                c.drawImage(img, x, y, w, h);
+            } else if (fallbackText) {
+                c.font = "900 130px Orbitron";
+                c.textAlign = "center";
+                c.textBaseline = "middle";
+                c.fillStyle = "rgba(255, 255, 255, 0.2)";
+                c.fillText(fallbackText, 150, 100);
+            }
+        }
+
+        function initBgCanvas() {
+            bgCtx.clearRect(0,0, 300, 200);
+            if (isLogoLoaded) {
+                bgCtx.globalAlpha = 0.2;
+                safeDrawImage(bgCtx, targetLogo, 40, 60, 220, 80, "T1");
+                bgCtx.globalAlpha = 1.0;
+            } else {
+                safeDrawImage(bgCtx, targetLogo, 0, 0, 0, 0, "T1");
+            }
+        }
+
+        function initDrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawResult.innerHTML = "T....1... (쓱쓱)";
+            drawResult.style.color = "#ccc";
+        }
+
+        drawBtn.addEventListener('click', () => {
+            drawModal.classList.add('active');
+            initBgCanvas();
+            initDrawCanvas();
+        });
+        closeDrawBtn.addEventListener('click', () => drawModal.classList.remove('active'));
+        clearBtn.addEventListener('click', initDrawCanvas);
+
+        function getDrawPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            let clientX = e.clientX; let clientY = e.clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
+            }
+            return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+        }
+
+        function startDrawPosition(e) { isDrawing = true; doDraw(e); }
+        function endDrawPosition() { isDrawing = false; ctx.beginPath(); }
+
+        function doDraw(e) {
+            if (!isDrawing) return;
+            if (e.cancelable) e.preventDefault(); 
+            
+            const pos = getDrawPos(e);
+            
+            ctx.lineWidth = 9; 
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#e2012d';
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        canvas.addEventListener('mousedown', startDrawPosition);
+        canvas.addEventListener('mouseup', endDrawPosition);
+        canvas.addEventListener('mousemove', doDraw);
+        canvas.addEventListener('mouseout', endDrawPosition);
+        canvas.addEventListener('touchstart', startDrawPosition, {passive: false});
+        canvas.addEventListener('touchend', endDrawPosition);
+        canvas.addEventListener('touchmove', doDraw, {passive: false});
+
+        submitBtn.addEventListener('click', () => {
+            const hCanvas = document.createElement('canvas');
+            hCanvas.width = 300; hCanvas.height = 200;
+            const hCtx = hCanvas.getContext('2d');
+            
+            if (isLogoLoaded && targetLogo.naturalWidth > 0) {
+                hCtx.drawImage(targetLogo, 40, 60, 220, 80);
+            } else { 
+                hCtx.font = "900 130px Orbitron"; hCtx.textAlign = "center"; hCtx.textBaseline = "middle"; hCtx.fillStyle = "black"; hCtx.fillText("T1", 150, 100); 
+            }
+
+            const targetData = hCtx.getImageData(0,0, 300, 200).data;
+            const userData = ctx.getImageData(0,0, 300, 200).data;
+
+            let targetPixels = 0; let hitPixels = 0; let overdrawPixels = 0;
+
+            for(let i = 3; i < targetData.length; i += 4) {
+                const isTarget = targetData[i] > 50; 
+                const isUser = userData[i] > 50;     
+                if (isTarget) targetPixels++;
+                if (isTarget && isUser) hitPixels++;
+                if (!isTarget && isUser) overdrawPixels++;
+            }
+
+            if (targetPixels === 0) return;
+
+            let coverage = (hitPixels / targetPixels) * 100;
+            let penalty = (overdrawPixels / targetPixels) * 110; 
+            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 2.0) - penalty)));
+
+            let msg = ""; let color = "#fff";
+
+            if (finalScore >= 90) { msg = `[ ${finalScore}% ] 페이커 아지르 토스를 보는 듯한 완벽한 각도! 폼 미쳤다!! 👑`; color = "#ffd700"; } 
+            else if (finalScore >= 70) { msg = `[ ${finalScore}% ] 오너의 리신 이니시급 날카로움! 티밀리 피지컬 칭찬해! ⚡`; color = "#00ff00"; } 
+            else if (finalScore >= 40) { msg = `[ ${finalScore}% ] 페이즈의 카이팅이 이거보단 정교할 듯? (쪼금 아쉽네) 🏹`; color = "#ffaa00"; } 
+            else { msg = `[ ${finalScore}% ] 삐빅- 방출 명단입니다. 와드나 박으러 가세요! 💀`; color = "#ff0000"; }
+
+            drawResult.innerHTML = msg; drawResult.style.color = color;
+        });
+
+        // ---------------- 3. 경기 예측하기 (세트 시뮬레이션) ----------------
+        const predictBtn = document.getElementById('start-predict');
+        const predictModal = document.getElementById('predict-modal');
+        const closePredictBtn = document.getElementById('close-predict-modal');
+        
+        const formatBtns = document.querySelectorAll('.format-btn');
+        const simulateBtn = document.getElementById('start-simulate');
+        const predictResultBox = document.getElementById('predict-final-result');
+        const predictionMsg = document.getElementById('prediction-msg');
+
+        let selectedFormat = 'bo3'; 
+
+        predictBtn.addEventListener('click', () => { predictModal.classList.add('active'); predictResultBox.style.display = 'none'; });
+        closePredictBtn.addEventListener('click', () => { predictModal.classList.remove('active'); });
+
+        formatBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                formatBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                selectedFormat = e.target.getAttribute('data-format');
+                predictResultBox.style.display = 'none'; 
+            });
+        });
+
+        simulateBtn.addEventListener('click', () => {
+            let wins = 0; let losses = 0; let sequence = [];
+            const targetWins = selectedFormat === 'bo3' ? 2 : 3;
+
+            while (wins < targetWins && losses < targetWins) {
+                if (Math.random() < 0.6) { wins++; sequence.push('승'); } 
+                else { losses++; sequence.push('패'); }
+            }
+
+            const seqStr = sequence.join('');
+            let finalMsg = ""; let borderColor = "";
+
+            if (wins === targetWins) { 
+                borderColor = "var(--t1-red)";
+                if (seqStr === '승승') finalMsg = "이것이 V6의 품격! 서커스 대개장하며 깔끔한 2:0 승리 🎪";
+                else if (seqStr === '패승승') finalMsg = "1세트 줘도 돼~ 짜릿한 패승승 역전승 🔥";
+                else if (seqStr === '승패승') finalMsg = "승패승? 오히려 좋아! 티밀리 심장 쫄깃해지는 꽉 찬 승리 💦";
+                else if (seqStr === '승승승') finalMsg = "압도적인 무력! '모든 길은 결국 T1을 통한다' 3:0 압살 👑";
+                else if (seqStr === '패패승승승') finalMsg = "낭만 합격!!! 은빛 스크랩스와 함께하는 전설의 역스윕 대역전극!!! 😭🎉";
+                else if (wins === 3 && losses === 2) finalMsg = "숨막히는 혈전 끝에 3:2 승리! 넥서스가 터지는 순간 소리 질러!!! 🏆";
+                else finalMsg = `${wins}:${losses} 우리 T1이야! 폼 미쳤다! 👏`;
+            } else { 
+                borderColor = "#555";
+                if (seqStr === '승승패패패') finalMsg = "아아... 뼈아픈 역스윕 ㅠㅠ 오늘 티밀리들 멘탈 회복 필수 🎤";
+                else if (seqStr === '패패' || seqStr === '패패패') finalMsg = "오늘은 컨디션 난조 ㅠㅠ '저를 무너뜨릴 순 없습니다' 다음 경기 복수 가자! 🌧️";
+                else if (wins === targetWins - 1) finalMsg = "한타 한 끗 차이... 강타 싸움 진 듯한 아쉬움 ㅠㅠ 끝까지 잘 싸웠다! 👏";
+                else finalMsg = `${wins}:${losses} 아쉬운 패배... 수고하셨습니다 ㅠㅠ 다음엔 이긴다!`;
+            }
+
+            let sequenceHtml = '<div class="set-sequence">';
+            sequence.forEach((result, idx) => {
+                if (result === '승') sequenceHtml += `<span class="set-badge set-win">${idx + 1}세트 승</span>`;
+                else sequenceHtml += `<span class="set-badge set-lose">${idx + 1}세트 패</span>`;
+            });
+            sequenceHtml += '</div>';
+
+            predictionMsg.innerHTML = sequenceHtml + `<div style="margin-top:15px;">${finalMsg}</div>`;
+            predictResultBox.style.borderLeftColor = borderColor;
+            predictResultBox.style.display = 'block';
+        });
+
+
+        // ---------------- 4. 티모 버섯 받기 미니게임 ----------------
+        const openTeemoBtn = document.getElementById('open-teemo-modal');
+        const teemoModal = document.getElementById('teemo-modal');
+        const closeTeemoBtn = document.getElementById('close-teemo-modal');
+        const teemoCanvas = document.getElementById('teemo-game-canvas');
+        const tCtx = teemoCanvas.getContext('2d');
+        
+        const scoreEl = document.getElementById('teemo-score');
+        const timeEl = document.getElementById('teemo-time');
+        
+        const teemoStartOverlay = document.getElementById('teemo-start-overlay');
+        const teemoResultOverlay = document.getElementById('teemo-result-overlay');
+        const teemoResultImg = document.getElementById('teemo-result-img');
+        const teemoResultMsg = document.getElementById('teemo-result-msg');
+        const restartTeemoBtn = document.getElementById('restart-teemo-btn');
+        const timeSelectBtns = document.querySelectorAll('.time-select-btn');
+
+        const imgTeemo = new Image();
+        imgTeemo.crossOrigin = "Anonymous";
+        imgTeemo.src = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Teemo.png"; 
+
+        const imgMushroom = new Image();
+        imgMushroom.crossOrigin = "Anonymous";
+        imgMushroom.src = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/TeemoRCast.png"; 
+
+        const resultImages = {
+            terrible: "https://wsrv.nl/?url=i.namu.wiki/i/VcWLEvdoPObW2mUH_naDSkf6mzzXGvs7ywlNO2dPIwnSBvYlLxUX04Cd1VHzR8hO9wn3xjyiPe60amkqL0-QPA.webp",
+            notBad: "https://wsrv.nl/?url=preview.redd.it/new-teemo-emote-on-pbe-v0-vrcvt4w94tqd1.png",
+            average: "https://wsrv.nl/?url=cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/209c04ef30cb3ccafbfc75bbbde7dfc0ed346b33-256x256.png",
+            good: "https://wsrv.nl/?url=upload2.inven.co.kr/upload/2018/06/06/bbs/i14781279030.png",
+            best: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeG8pcpCJ50zrZXIbIzmaGU4YYZYlHCjesIQ&s"
+        };
+
+        let isTeemoPlaying = false;
+        let teemoScore = 0;
+        let teemoTimeLeft = 0;
+        let teemoTotalTime = 30; 
+        let teemoGameLoop;
+        let teemoTimerInterval;
+        let mushrooms = [];
+
+        let teemo = {
+            x: 120, 
+            y: 230, 
+            width: 60,
+            height: 60
+        };
+
+        openTeemoBtn.addEventListener('click', () => {
+            teemoModal.classList.add('active');
+            resetTeemoGame();
+            drawTeemoFrame(); 
+        });
+
+        closeTeemoBtn.addEventListener('click', () => {
+            teemoModal.classList.remove('active');
+            endTeemoGame(false);
+        });
+
+        restartTeemoBtn.addEventListener('click', () => {
+            resetTeemoGame();
+        });
+
+        timeSelectBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                let selectedTime = parseInt(e.target.getAttribute('data-time'));
+                startTeemoGame(selectedTime);
+            });
+        });
+
+        function resetTeemoGame() {
+            isTeemoPlaying = false;
+            teemoScore = 0;
+            teemoTimeLeft = 0;
+            mushrooms = [];
+            teemo.x = 120;
+            scoreEl.innerText = `점수: 0`;
+            timeEl.innerText = `시간: 0초`;
+            
+            teemoStartOverlay.style.display = 'flex';
+            teemoResultOverlay.style.display = 'none';
+            tCtx.clearRect(0, 0, teemoCanvas.width, teemoCanvas.height);
+            drawTeemoFrame();
+        }
+
+        function startTeemoGame(time) {
+            teemoTotalTime = time;
+            teemoTimeLeft = time;
+            isTeemoPlaying = true;
+            
+            scoreEl.innerText = `점수: ${teemoScore}`;
+            timeEl.innerText = `시간: ${teemoTimeLeft}초`;
+
+            teemoStartOverlay.style.display = 'none';
+
+            teemoTimerInterval = setInterval(() => {
+                teemoTimeLeft--;
+                timeEl.innerText = `시간: ${teemoTimeLeft}초`;
+                if (teemoTimeLeft <= 0) {
+                    endTeemoGame(true);
+                }
+            }, 1000);
+
+            requestAnimationFrame(updateTeemoGame);
+        }
+
+        function endTeemoGame(showResult) {
+            isTeemoPlaying = false;
+            cancelAnimationFrame(teemoGameLoop);
+            clearInterval(teemoTimerInterval);
+            
+            if(showResult) {
+                let normalizedScore = teemoScore * (30 / teemoTotalTime);
+                let imgUrl = "";
+                let msg = "";
+                
+                if (normalizedScore < 20) { 
+                    imgUrl = resultImages.terrible;
+                    msg = "이거 완전 버그다모!! 눈 감고 한 거 아니지? (머쓱)";
+                } else if (normalizedScore < 40) { 
+                    imgUrl = resultImages.notBad;
+                    msg = "어어? 쪼오끔 아쉽다 그치? 그래도 뭐 나쁘지 않다모~";
+                } else if (normalizedScore < 65) { 
+                    imgUrl = resultImages.average;
+                    msg = "오 쫌 치네? 운타라식 안정적인 버섯 파밍!";
+                } else if (normalizedScore < 85) { 
+                    imgUrl = resultImages.good;
+                    msg = "와 대박인데?! 피지컬 완전 폼 미쳤다모!";
+                } else { 
+                    imgUrl = resultImages.best;
+                    msg = "아니 진짜 미쳤다 ㅋㅋ 이 정도면 프로게이머다모!!";
+                }
+
+                teemoResultImg.src = imgUrl;
+                teemoResultMsg.innerText = msg;
+                teemoResultOverlay.style.display = 'flex';
+            }
+        }
+
+        function updateTeemoGame() {
+            if (!isTeemoPlaying) return;
+
+            tCtx.clearRect(0, 0, teemoCanvas.width, teemoCanvas.height);
+
+            let progress = 1 - (teemoTimeLeft / teemoTotalTime);
+            let spawnRate = 0.03 + (progress * 0.1); 
+            let baseSpeed = 3 + (progress * 5); 
+
+            if (Math.random() < spawnRate) {
+                mushrooms.push({
+                    x: Math.random() * (teemoCanvas.width - 30),
+                    y: -30,
+                    width: 30,
+                    height: 30,
+                    speed: baseSpeed + (Math.random() * 2) 
+                });
+            }
+
+            for (let i = 0; i < mushrooms.length; i++) {
+                let m = mushrooms[i];
+                m.y += m.speed;
+
+                if (m.x < teemo.x + teemo.width - 10 &&
+                    m.x + m.width > teemo.x + 10 &&
+                    m.y < teemo.y + teemo.height &&
+                    m.y + m.height > teemo.y + 10) {
+                    
+                    teemoScore++;
+                    scoreEl.innerText = `점수: ${teemoScore}`;
+                    mushrooms.splice(i, 1);
+                    i--;
+                    continue;
+                }
+
+                if (m.y > teemoCanvas.height) {
+                    mushrooms.splice(i, 1);
+                    i--;
+                }
+            }
+
+            drawTeemoFrame();
+            teemoGameLoop = requestAnimationFrame(updateTeemoGame);
+        }
+
+        function drawTeemoFrame() {
+            mushrooms.forEach(m => {
+                if (imgMushroom.complete && imgMushroom.naturalWidth > 0) {
+                    tCtx.drawImage(imgMushroom, m.x, m.y, m.width, m.height);
+                } else {
+                    tCtx.fillStyle = 'purple';
+                    tCtx.beginPath();
+                    tCtx.arc(m.x + m.width/2, m.y + m.height/2, m.width/2, 0, Math.PI * 2);
+                    tCtx.fill();
+                }
+            });
+
+            if (imgTeemo.complete && imgTeemo.naturalWidth > 0) {
+                tCtx.drawImage(imgTeemo, teemo.x, teemo.y, teemo.width, teemo.height);
+            } else {
+                tCtx.fillStyle = 'brown';
+                tCtx.fillRect(teemo.x, teemo.y, teemo.width, teemo.height);
+            }
+        }
+
+        function moveTeemo(e) {
+            if (!isTeemoPlaying) return;
+            if (e.cancelable) e.preventDefault();
+
+            const rect = teemoCanvas.getBoundingClientRect();
+            const scaleX = teemoCanvas.width / rect.width;
+            
+            let clientX = e.clientX;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+            }
+
+            let touchX = (clientX - rect.left) * scaleX;
+            
+            teemo.x = touchX - (teemo.width / 2);
+
+            if (teemo.x < 0) teemo.x = 0;
+            if (teemo.x > teemoCanvas.width - teemo.width) teemo.x = teemoCanvas.width - teemo.width;
+        }
+
+        teemoCanvas.addEventListener('touchmove', moveTeemo, {passive: false});
+        teemoCanvas.addEventListener('mousemove', moveTeemo);
+
+
+        // ---------------- 5. 무빙 훈련 ----------------
+        const openDodgeBtn = document.getElementById('open-dodge-modal');
+        const dodgeModal = document.getElementById('dodge-modal');
+        const closeDodgeBtn = document.getElementById('close-dodge-modal');
+        const dodgeCanvas = document.getElementById('dodge-game-canvas');
+        const dCtx = dodgeCanvas.getContext('2d');
+        const dodgeScoreEl = document.getElementById('dodge-score');
+        const dodgeStartBtn = document.getElementById('start-dodge-btn');
+        const dodgeResultMsg = document.getElementById('dodge-result-msg');
+        const dodgeOverlay = document.getElementById('dodge-overlay');
+
+        let dodgePlaying = false;
+        let dodgeStartTime = 0;
+        let dodgeTime = 0;
+        let dodgeAnimationId;
+        
+        let player = { x: 150, y: 150, radius: 8 };
+        let enemies = [];
+        let enemySpawnRate = 30; 
+        let frameCount = 0;
+
+        openDodgeBtn.addEventListener('click', () => {
+            dodgeModal.classList.add('active');
+            resetDodgeGame();
+        });
+
+        closeDodgeBtn.addEventListener('click', () => {
+            dodgeModal.classList.remove('active');
+            dodgePlaying = false;
+            cancelAnimationFrame(dodgeAnimationId);
+        });
+
+        dodgeStartBtn.addEventListener('click', () => {
+            startDodgeGame();
+        });
+
+        function resetDodgeGame() {
+            dodgePlaying = false;
+            cancelAnimationFrame(dodgeAnimationId);
+            dCtx.clearRect(0, 0, dodgeCanvas.width, dodgeCanvas.height);
+            player.x = 150; player.y = 150;
+            enemies = [];
+            dodgeScoreEl.innerText = "0.00초";
+            dodgeResultMsg.innerHTML = "손가락(마우스)으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
+            dodgeResultMsg.style.color = "#ccc";
+            dodgeStartBtn.style.display = "block";
+            dodgeStartBtn.innerText = "훈련 시작";
+            dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
+            dodgeOverlay.style.pointerEvents = "auto"; 
+            drawDodgeFrame();
+        }
+
+        function startDodgeGame() {
+            dodgePlaying = true;
+            dodgeStartTime = Date.now();
+            enemies = [];
+            frameCount = 0;
+            dodgeOverlay.style.background = "transparent"; 
+            dodgeOverlay.style.pointerEvents = "none"; 
+            dodgeStartBtn.style.display = "none";
+            dodgeResultMsg.innerText = "";
+            dodgeScoreEl.innerText = "0.00초";
+            dodgeLoop();
+        }
+
+        function movePlayer(e) {
+            if (!dodgePlaying) return;
+            if (e.cancelable) e.preventDefault(); 
+
+            const rect = dodgeCanvas.getBoundingClientRect();
+            const scaleX = dodgeCanvas.width / rect.width;
+            const scaleY = dodgeCanvas.height / rect.height;
+            
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+            
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+
+            player.x = (clientX - rect.left) * scaleX;
+            player.y = (clientY - rect.top) * scaleY;
+            
+            if (player.x < player.radius) player.x = player.radius;
+            if (player.x > dodgeCanvas.width - player.radius) player.x = dodgeCanvas.width - player.radius;
+            if (player.y < player.radius) player.y = player.radius;
+            if (player.y > dodgeCanvas.height - player.radius) player.y = dodgeCanvas.height - player.radius;
+        }
+
+        dodgeCanvas.addEventListener('mousemove', movePlayer);
+        dodgeCanvas.addEventListener('touchmove', movePlayer, {passive: false});
+
+        function spawnEnemy() {
+            let side = Math.floor(Math.random() * 4); 
+            let ex, ey, vx, vy;
+            let speed = 2.5 + Math.random() * 3 + (dodgeTime / 6); 
+            let radius = 6 + Math.random() * 12;
+
+            if (side === 0) { ex = Math.random() * 300; ey = -20; vx = (Math.random() - 0.5) * 3; vy = speed; }
+            else if (side === 1) { ex = 320; ey = Math.random() * 300; vx = -speed; vy = (Math.random() - 0.5) * 3; }
+            else if (side === 2) { ex = 320; ey = Math.random() * 300; vx = (Math.random() - 0.5) * 3; vy = -speed; }
+            else { ex = -20; ey = Math.random() * 300; vx = speed; vy = (Math.random() - 0.5) * 3; }
+
+            enemies.push({ x: ex, y: ey, vx: vx, vy: vy, radius: radius });
+        }
+
+        function drawDodgeFrame() {
+            dCtx.clearRect(0, 0, dodgeCanvas.width, dodgeCanvas.height);
+
+            dCtx.fillStyle = '#fff';
+            dCtx.beginPath();
+            dCtx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            dCtx.fill();
+            dCtx.strokeStyle = '#b366ff';
+            dCtx.lineWidth = 2;
+            dCtx.stroke();
+
+            for (let i = 0; i < enemies.length; i++) {
+                let e = enemies[i];
+                dCtx.fillStyle = '#e2012d'; 
+                dCtx.beginPath();
+                dCtx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+                dCtx.fill();
+                dCtx.fillStyle = 'rgba(226, 1, 45, 0.3)';
+                dCtx.beginPath();
+                dCtx.arc(e.x - (e.vx*2), e.y - (e.vy*2), e.radius*0.8, 0, Math.PI * 2);
+                dCtx.fill();
+            }
+        }
+
+        function dodgeLoop() {
+            if (!dodgePlaying) return;
+
+            dodgeTime = (Date.now() - dodgeStartTime) / 1000;
+            dodgeScoreEl.innerText = dodgeTime.toFixed(2) + "초";
+
+            frameCount++;
+            let currentSpawnRate = Math.max(4, enemySpawnRate - Math.floor(dodgeTime * 1.5));
+            if (frameCount % currentSpawnRate === 0) {
+                spawnEnemy();
+            }
+
+            for (let i = 0; i < enemies.length; i++) {
+                let e = enemies[i];
+                e.x += e.vx;
+                e.y += e.vy;
+
+                let dist = Math.hypot(player.x - e.x, player.y - e.y);
+                if (dist < player.radius + e.radius - 2) { 
+                    gameOverDodge();
+                    return; 
+                }
+
+                if (e.x < -60 || e.x > 360 || e.y < -60 || e.y > 360) {
+                    enemies.splice(i, 1);
+                    i--;
+                }
+            }
+
+            drawDodgeFrame();
+            dodgeAnimationId = requestAnimationFrame(dodgeLoop);
+        }
+
+        function gameOverDodge() {
+            dodgePlaying = false;
+            dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
+            dodgeOverlay.style.pointerEvents = "auto"; 
+            dodgeStartBtn.style.display = "block";
+            dodgeStartBtn.innerText = "다시 도전";
+
+            let msg = "";
+            let color = "";
+            if (dodgeTime < 5) { msg = "아니 반응속도 실화? 골드도 이것보단 잘 피하겠다!"; color = "#ffaa00"; }
+            else if (dodgeTime < 15) { msg = "나쁘지 않은 무빙! 하지만 대상혁에겐 한참 모자랍니다."; color = "#ccc"; }
+            else if (dodgeTime < 30) { msg = "오! 폼 미쳤다! 한타 때 딜 좀 넣는 원딜 수준 무빙!"; color = "#00ff00"; }
+            else { msg = "당신이 바로 2026년 T1의 숨겨진 에이스! 무빙 인정합니다 👑"; color = "#ffcc00"; }
+
+            dodgeResultMsg.innerHTML = `<span style="color:${color}">${msg}</span><br><br>생존 기록: ${dodgeTime.toFixed(2)}초`;
+        }
+
+        // ---------------- 6. 점멸 피지컬 훈련 ----------------
+        const openClickerBtn = document.getElementById('open-clicker-modal');
+        const clickerModal = document.getElementById('clicker-modal');
+        const closeClickerBtn = document.getElementById('close-clicker-modal');
+        const clickerTimeText = document.getElementById('clicker-time-text');
+        const clickerScoreText = document.getElementById('clicker-score-text');
+        const flashTarget = document.getElementById('flash-target');
+        const startClickerBtn = document.getElementById('start-clicker-btn');
+        const clickerResultMsg = document.getElementById('clicker-result-msg');
+
+        let clickerTimer;
+        let clickerTimeLeft = 10.00;
+        let clickCount = 0;
+        let isClickerPlaying = false;
+
+        openClickerBtn.addEventListener('click', () => {
+            clickerModal.classList.add('active');
+            resetClickerGame();
+        });
+
+        closeClickerBtn.addEventListener('click', () => {
+            clickerModal.classList.remove('active');
+            clearInterval(clickerTimer);
+            isClickerPlaying = false;
+        });
+
+        startClickerBtn.addEventListener('click', () => {
+            startClickerGame();
+        });
+
+        flashTarget.addEventListener('touchstart', (e) => {
+            if(e.cancelable) e.preventDefault();
+            if(isClickerPlaying) hitFlash();
+        }, {passive: false});
+
+        flashTarget.addEventListener('mousedown', (e) => {
+            if(e.cancelable) e.preventDefault();
+            if(isClickerPlaying) hitFlash();
+        });
+
+        function resetClickerGame() {
+            clearInterval(clickerTimer);
+            isClickerPlaying = false;
+            clickerTimeLeft = 10.00;
+            clickCount = 0;
+            clickerTimeText.innerText = "10.00 초";
+            clickerTimeText.style.color = "#fff";
+            clickerScoreText.innerText = "0 HIT";
+            clickerResultMsg.style.display = "none";
+            startClickerBtn.style.display = "block";
+            startClickerBtn.innerText = "훈련 시작";
+            flashTarget.style.pointerEvents = "none";
+            flashTarget.style.filter = "grayscale(100%)";
+            flashTarget.style.transform = "scale(1)";
+        }
+
+        function startClickerGame() {
+            clickCount = 0;
+            clickerTimeLeft = 10.00;
+            isClickerPlaying = true;
+            clickerTimeText.style.color = "#fff";
+            clickerScoreText.innerText = "0 HIT";
+            startClickerBtn.style.display = "none";
+            clickerResultMsg.style.display = "none";
+            flashTarget.style.pointerEvents = "auto";
+            flashTarget.style.filter = "grayscale(0%)";
+            
+            let startTime = Date.now();
+
+            clearInterval(clickerTimer);
+            clickerTimer = setInterval(() => {
+                let elapsed = (Date.now() - startTime) / 1000;
+                clickerTimeLeft = 10.00 - elapsed;
+
+                if (clickerTimeLeft <= 0) {
+                    clickerTimeLeft = 0;
+                    endClickerGame();
+                }
+                
+                clickerTimeText.innerText = clickerTimeLeft.toFixed(2) + " 초";
+                
+                if (clickerTimeLeft <= 3 && clickerTimeLeft > 0) {
+                    clickerTimeText.style.color = "#e2012d";
+                }
+            }, 10);
+        }
+
+        function hitFlash() {
+            clickCount++;
+            clickerScoreText.innerText = clickCount + " HIT";
+            
+            flashTarget.style.transform = `scale(0.9) translate(${(Math.random()-0.5)*15}px, ${(Math.random()-0.5)*15}px)`;
+            setTimeout(() => {
+                if(isClickerPlaying) flashTarget.style.transform = "scale(1) translate(0px, 0px)";
+            }, 30);
+        }
+
+        function endClickerGame() {
+            clearInterval(clickerTimer);
+            isClickerPlaying = false;
+            flashTarget.style.pointerEvents = "none";
+            flashTarget.style.filter = "grayscale(100%)";
+            flashTarget.style.transform = "scale(1)";
+
+            let aps = (clickCount / 10).toFixed(1);
+            let msg = "";
+            let color = "";
+
+            if(clickCount < 30) { msg = "플래시를 아끼다 똥이 됐습니다... 생존 실패!"; color = "#ccc"; }
+            else if(clickCount < 60) { msg = "무난한 점멸 반응! 하지만 한 틱 차이로 죽었네요."; color = "#00ff00"; }
+            else if(clickCount < 90) { msg = "빛의 속도! CC기가 풀리자마자 칼점멸 성공 ⚡"; color = "#ffaa00"; }
+            else { msg = "광클의 신! 대상혁급 반응속도로 스킬을 전부 피했습니다 👑"; color = "#ffcc00"; }
+
+            clickerResultMsg.innerHTML = `<span style="color:${color}">${msg}</span><br>기록: 10초당 ${clickCount}회 점멸 (초당 ${aps}타)`;
+            clickerResultMsg.style.display = "block";
+            
+            startClickerBtn.style.display = "block";
+            startClickerBtn.innerText = "다시 도전";
+        }
+    </script>
+</body>
+</html>
