@@ -326,7 +326,7 @@
         .teemo-time-btns { display: flex; gap: 10px; }
         .teemo-btn { background: #2d8a2d; border: none; color: white; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
         .teemo-btn:hover { background: #4a9e4a; transform: translateY(-2px); }
-        .teemo-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.85rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+        .teemo-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
         .teemo-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 20px; text-align: center; }
 
         /* ---------------- 무빙 훈련 스타일 ---------------- */
@@ -1048,16 +1048,16 @@
                 let color = "";
                 
                 // 점수별 찰진 멘트 & 컬러 텍스트 지정! (커트라인 5% 하향)
-                if (normalizedScore < 71) { 
+                if (normalizedScore < 70) { 
                     msg = "이거 완전 버그다모!!<br><span style='font-size:0.85rem; color:#aaa;'>눈 감고 한 거 아니지? (머쓱)</span>";
                     color = "#ccc";
-                } else if (normalizedScore < 142) { 
+                } else if (normalizedScore < 130) { 
                     msg = "어어? 쪼오끔 아쉽다 그치?<br><span style='font-size:0.85rem; color:#aaa;'>그래도 뭐 나쁘지 않다모~</span>";
                     color = "#00ff00";
-                } else if (normalizedScore < 228) { 
+                } else if (normalizedScore < 210) { 
                     msg = "오 쫌 치네?<br><span style='font-size:0.85rem; color:#aaa;'>운타라식 안정적인 버섯 파밍! 🍄</span>";
                     color = "#ffaa00";
-                } else if (normalizedScore < 313) { 
+                } else if (normalizedScore < 300) { 
                     msg = "와 대박인데?!<br><span style='font-size:0.85rem; color:#aaa;'>피지컬 완전 폼 미쳤다모!</span>";
                     color = "#ffcc00";
                 } else { 
