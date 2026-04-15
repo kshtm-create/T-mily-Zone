@@ -326,7 +326,8 @@
         .teemo-time-btns { display: flex; gap: 10px; }
         .teemo-btn { background: #2d8a2d; border: none; color: white; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
         .teemo-btn:hover { background: #4a9e4a; transform: translateY(-2px); }
-        .teemo-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+        /* 점수 크기 5% 축소! (3rem -> 2.85rem) */
+        .teemo-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.85rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
         .teemo-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 20px; text-align: center; }
 
         /* ---------------- 무빙 훈련 스타일 ---------------- */
@@ -953,7 +954,6 @@
         
         const teemoStartOverlay = document.getElementById('teemo-start-overlay');
         const teemoResultOverlay = document.getElementById('teemo-result-overlay');
-        const teemoResultImg = document.getElementById('teemo-result-img');
         const teemoResultMsg = document.getElementById('teemo-result-msg');
         const restartTeemoBtn = document.getElementById('restart-teemo-btn');
         const timeSelectBtns = document.querySelectorAll('.time-select-btn');
@@ -1049,21 +1049,21 @@
                 let msg = "";
                 let color = "";
                 
-                // 점수별 찰진 멘트 & 컬러 텍스트 지정!
-                if (normalizedScore < 75) { 
-                    msg = "이거 완전 버그다모!!<br><span style='font-size:0.85rem; color:#aaa;'>눈 감고 한 거 아니지? (머쓱)</span>";
+                // 난이도 5% 쉽게 조정 (기존: 75, 150, 240, 330 -> 변경: 71, 142, 228, 313)
+                if (normalizedScore < 71) { 
+                    msg = "이거 완전 버그다모!!<br><span style='font-size:0.85rem; color:#aaa;'>(아무무처럼 광광 우럭따 😭)</span>";
                     color = "#ccc";
-                } else if (normalizedScore < 150) { 
-                    msg = "어어? 쪼오끔 아쉽다 그치?<br><span style='font-size:0.85rem; color:#aaa;'>그래도 뭐 나쁘지 않다모~</span>";
+                } else if (normalizedScore < 142) { 
+                    msg = "어어? 쪼오끔 아쉽다 그치?<br><span style='font-size:0.85rem; color:#aaa;'>(람머스처럼 오케이.. 🐢)</span>";
                     color = "#00ff00";
-                } else if (normalizedScore < 240) { 
+                } else if (normalizedScore < 228) { 
                     msg = "오 쫌 치네?<br><span style='font-size:0.85rem; color:#aaa;'>운타라식 안정적인 버섯 파밍! 🍄</span>";
                     color = "#ffaa00";
-                } else if (normalizedScore < 330) { 
-                    msg = "와 대박인데?!<br><span style='font-size:0.85rem; color:#aaa;'>피지컬 완전 폼 미쳤다모!</span>";
+                } else if (normalizedScore < 313) { 
+                    msg = "와 대박인데?!<br><span style='font-size:0.85rem; color:#aaa;'>오너 리신급 미친 피지컬 인정! ⚡</span>";
                     color = "#ffcc00";
                 } else { 
-                    msg = "아니 진짜 미쳤다 ㅋㅋ<br><span style='font-size:0.85rem; color:#aaa;'>이 정도면 프로게이머다모!! 👑</span>";
+                    msg = "아니 진짜 미쳤다 ㅋㅋ<br><span style='font-size:0.85rem; color:#aaa;'>당신을 진정한 T1 성골 유스로 임명합니다!! 👑</span>";
                     color = "#e2012d";
                 }
 
@@ -1082,7 +1082,6 @@
             tCtx.clearRect(0, 0, teemoCanvas.width, teemoCanvas.height);
 
             let progress = 1 - (teemoTimeLeft / teemoTotalTime);
-            // 난이도 매운맛 패치: 기본 생성률과 속도를 확 올림!
             let spawnRate = 0.05 + (progress * 0.15); 
             let baseSpeed = 4.5 + (progress * 7.5); 
 
@@ -1092,7 +1091,7 @@
                     y: -30,
                     width: 30,
                     height: 30,
-                    speed: baseSpeed + (Math.random() * 3) // 속도 편차도 크게 해서 불규칙하게
+                    speed: baseSpeed + (Math.random() * 3) 
                 });
             }
 
@@ -1100,7 +1099,6 @@
                 let m = mushrooms[i];
                 m.y += m.speed;
 
-                // 판정 빡세게: 예전엔 10이었는데 15로 늘려서 정중앙에서만 먹어지게 함!
                 if (m.x < teemo.x + teemo.width - 15 &&
                     m.x + m.width > teemo.x + 15 &&
                     m.y < teemo.y + teemo.height &&
