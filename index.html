@@ -166,13 +166,13 @@
         .clicker-game-btn { background: linear-gradient(90deg, #4d3f00, #806600); border-color: #b38f00; }
         .clicker-game-btn:hover { background: #ffcc00; color: #000; border-color: #ffcc00; }
 
-        /* 링크 리스트 */
+        /* 링크 리스트 (간격 10% 축소 패치) */
         .quest-list {
             display: flex;
             flex-wrap: nowrap; 
             justify-content: flex-start;
             align-items: center;
-            gap: 1rem; 
+            gap: 0.9rem; /* 1rem에서 0.9rem으로 10% 축소 */
             margin-top: 0.5rem;
             padding: 0.5rem 1rem 2rem 1rem; 
             overflow-x: auto; 
@@ -283,8 +283,8 @@
         }
         .close-btn:hover { background: var(--t1-red); }
 
-        /* 가챠 특정 스타일 */
-        .gacha-img-container { width: 200px; height: 200px; margin: 0 auto; border: 2px solid var(--silver-accent); overflow: hidden; background: #222; }
+        /* 가챠 특정 스타일 (페이즈 배경색 #e4e4e4 통일) */
+        .gacha-img-container { width: 200px; height: 200px; margin: 0 auto; border: 2px solid var(--silver-accent); overflow: hidden; background: #e4e4e4; }
         .gacha-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
         .gacha-name { font-size: 1.5rem; font-weight: 900; }
         .gacha-msg { color: #ffd700; font-size: 0.95rem; line-height: 1.4; word-break: keep-all; height: 3rem; }
@@ -342,8 +342,8 @@
         .dodge-score-text { font-size: 1.5rem; font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 900; margin-bottom: 10px; }
         .dodge-start-btn { background: linear-gradient(90deg, #7a4aab, #b366ff); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
         .dodge-start-btn:hover { background: #fff; transform: translateY(-2px); }
-        .dodge-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); display: none; }
-        .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; text-align: center; }
+        .dodge-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); display: none; text-align: center; }
+        .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; text-align: center; margin-bottom: 20px;}
 
         /* ---------------- 점멸 피지컬 훈련 (광클 미니게임) 스타일 ---------------- */
         #clicker-modal .modal-box { border-color: #ffcc00; max-width: 400px; }
@@ -365,7 +365,7 @@
         .clicker-start-btn { background: linear-gradient(90deg, #b38f00, #ffcc00); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 10px; }
         .clicker-start-btn:hover { background: #fff; color: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4); }
         .clicker-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); text-align: center; display: none; }
-        .clicker-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 15px; text-align: center; display: none; }
+        .clicker-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 20px; text-align: center; display: none; }
 
         @keyframes flash { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -1174,7 +1174,7 @@
         teemoCanvas.addEventListener('mousemove', moveTeemo);
 
 
-        // ---------------- 5. 유체화 무빙 훈련 (NEW 테마) ----------------
+        // ---------------- 5. 유체화 무빙 훈련 ----------------
         const openDodgeBtn = document.getElementById('open-dodge-modal');
         const dodgeModal = document.getElementById('dodge-modal');
         const closeDodgeBtn = document.getElementById('close-dodge-modal');
@@ -1195,7 +1195,7 @@
         let enemySpawnRate = 30; 
         let frameCount = 0;
 
-        // 유체화 이미지 로드 (무적의 라이엇 공식 이미지)
+        // 유체화 이미지 로드
         const imgGhost = new Image();
         imgGhost.crossOrigin = "Anonymous";
         imgGhost.src = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/SummonerHaste.png";
@@ -1233,7 +1233,7 @@
             dodgeStartBtn.innerText = "훈련 시작";
             
             dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
-            dodgeOverlay.classList.remove('blur-active'); // 블러 해제
+            dodgeOverlay.classList.remove('blur-active'); 
             dodgeOverlay.style.pointerEvents = "auto"; 
             
             drawDodgeFrame();
@@ -1302,7 +1302,6 @@
         function drawDodgeFrame() {
             dCtx.clearRect(0, 0, dodgeCanvas.width, dodgeCanvas.height);
 
-            // 유체화 아이콘 그리기 (원형 마스크 적용)
             if (imgGhost.complete && imgGhost.naturalWidth > 0) {
                 dCtx.save();
                 dCtx.beginPath();
@@ -1312,7 +1311,6 @@
                 dCtx.drawImage(imgGhost, player.x - player.radius - 4, player.y - player.radius - 4, (player.radius + 4) * 2, (player.radius + 4) * 2);
                 dCtx.restore();
                 
-                // 테두리
                 dCtx.beginPath();
                 dCtx.arc(player.x, player.y, player.radius + 4, 0, Math.PI * 2);
                 dCtx.strokeStyle = '#b366ff';
@@ -1325,7 +1323,7 @@
                 dCtx.fill();
             }
 
-            // 애쉬 화살(빨간색 투사체) 그리기
+            // 파란색 애쉬 화살
             for (let i = 0; i < enemies.length; i++) {
                 let e = enemies[i];
                 dCtx.save();
@@ -1333,12 +1331,11 @@
                 dCtx.rotate(Math.atan2(e.vy, e.vx));
                 
                 dCtx.shadowBlur = 10;
-                dCtx.shadowColor = '#e2012d';
+                dCtx.shadowColor = '#00bfff';
                 dCtx.fillStyle = '#fff';
-                dCtx.strokeStyle = '#e2012d';
+                dCtx.strokeStyle = '#00bfff';
                 dCtx.lineWidth = 2;
 
-                // 화살 뼈대
                 dCtx.beginPath();
                 dCtx.moveTo(e.radius * 1.8, 0); 
                 dCtx.lineTo(-e.radius, e.radius * 0.8); 
@@ -1348,8 +1345,7 @@
                 dCtx.fill();
                 dCtx.stroke();
                 
-                // 화살 내부 붉은 코어
-                dCtx.fillStyle = '#e2012d';
+                dCtx.fillStyle = '#00bfff';
                 dCtx.beginPath();
                 dCtx.moveTo(e.radius * 1.2, 0); 
                 dCtx.lineTo(-e.radius*0.6, e.radius * 0.4); 
@@ -1380,7 +1376,6 @@
                 e.y += e.vy;
 
                 let dist = Math.hypot(player.x - e.x, player.y - e.y);
-                // 히트박스 조금 더 정교하게 수정
                 if (dist < player.radius + e.radius - 4) { 
                     gameOverDodge();
                     return; 
@@ -1399,7 +1394,7 @@
         function gameOverDodge() {
             dodgePlaying = false;
             dodgeOverlay.style.background = "rgba(0, 0, 0, 0.5)";
-            dodgeOverlay.classList.add('blur-active'); // 배경 블러 짠!
+            dodgeOverlay.classList.add('blur-active'); 
             dodgeOverlay.style.pointerEvents = "auto"; 
             
             dodgeScoreEl.style.display = "none";
@@ -1479,7 +1474,6 @@
             clickerTimeLeft = 10.00;
             clickCount = 0;
             
-            // 숨겨뒀던 게임 요소 다시 보여주기
             document.getElementById('clicker-stats-area').classList.remove('clicker-hidden');
             flashTarget.classList.remove('clicker-hidden');
             
@@ -1546,7 +1540,6 @@
             isClickerPlaying = false;
             flashTarget.style.pointerEvents = "none";
             
-            // 게임 끝나면 화면 깔끔하게 하려고 게임 요소 싹 숨기기!
             document.getElementById('clicker-stats-area').classList.add('clicker-hidden');
             flashTarget.classList.add('clicker-hidden');
 
