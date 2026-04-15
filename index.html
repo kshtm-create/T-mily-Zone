@@ -1063,10 +1063,10 @@
                 } else if (normalizedScore < 40) { 
                     imgUrl = resultImages.notBad;
                     msg = "어어? 쪼오끔 아쉽다 그치? 그래도 뭐 나쁘지 않다모~";
-                } else if (normalizedScore < 65) { 
+                } else if (normalizedScore < 70) { 
                     imgUrl = resultImages.average;
                     msg = "오 쫌 치네? 운타라식 안정적인 버섯 파밍!";
-                } else if (normalizedScore < 85) { 
+                } else if (normalizedScore < 100) { 
                     imgUrl = resultImages.good;
                     msg = "와 대박인데?! 피지컬 완전 폼 미쳤다모!";
                 } else { 
@@ -1087,7 +1087,7 @@
 
             let progress = 1 - (teemoTimeLeft / teemoTotalTime);
             let spawnRate = 0.03 + (progress * 0.1); 
-            let baseSpeed = 3 + (progress * 5); 
+            let baseSpeed = 3 + (progress * 8); 
 
             if (Math.random() < spawnRate) {
                 mushrooms.push({
