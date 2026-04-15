@@ -338,7 +338,8 @@
         .dodge-score-text { font-size: 1.5rem; font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 900; margin-bottom: 10px; }
         .dodge-start-btn { background: linear-gradient(90deg, #7a4aab, #b366ff); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
         .dodge-start-btn:hover { background: #fff; transform: translateY(-2px); }
-        .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.5; font-size: 1rem; word-break: keep-all; text-align: center; }
+        .dodge-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); display: none; }
+        .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; text-align: center; }
 
         /* ---------------- 점멸 피지컬 훈련 (광클 미니게임) 스타일 ---------------- */
         #clicker-modal .modal-box { border-color: #ffcc00; max-width: 400px; }
@@ -355,7 +356,48 @@
         .flash-target:active { transform: scale(0.9); box-shadow: 0 0 50px #ffcc00; }
         .clicker-start-btn { background: linear-gradient(90deg, #b38f00, #ffcc00); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 10px; }
         .clicker-start-btn:hover { background: #fff; color: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4); }
-        .clicker-result-msg { color: #ffcc00; font-weight: bold; margin-top: 15px; font-size: 1rem; word-break: keep-all; line-height: 1.5; display: none; }
+        .clicker-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); text-align: center; display: none; }
+        .clicker-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 15px; text-align: center; display: none; }
+
+        /* ---------------- 시그니처 챔피언 짝맞추기 (기억력 게임) 스타일 ---------------- */
+        #memory-modal .modal-box { border-color: #7e7e9e; max-width: 400px; }
+        .memory-title { color: #b0b0d0; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 5px; }
+        .memory-stats { font-size: 1.1rem; font-family: 'Orbitron', sans-serif; color: #fff; margin-bottom: 10px; }
+        
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 8px;
+            margin: 15px auto;
+            width: 100%;
+            max-width: 380px;
+            perspective: 1000px;
+        }
+
+        .memory-card {
+            width: 100%;
+            aspect-ratio: 1;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .memory-card.flipped { transform: rotateY(180deg); }
+
+        .memory-card-front, .memory-card-back {
+            width: 100%; height: 100%; position: absolute; backface-visibility: hidden;
+            border-radius: 8px; display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+
+        .memory-card-back { background: #222; border: 2px solid #555; }
+        .memory-card-back img { width: 60%; opacity: 0.7; }
+        
+        .memory-card-front { background: #111; border: 2px solid var(--t1-red); transform: rotateY(180deg); }
+        .memory-card-front img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+        .memory-start-btn { background: linear-gradient(90deg, #3b3b4f, #565678); border: none; color: #fff; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+        .memory-start-btn:hover { background: #b0b0d0; color: #000; transform: translateY(-2px); }
 
         @keyframes flash { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -460,6 +502,7 @@
                 
                 <div id="dodge-overlay" class="dodge-overlay">
                     <div class="dodge-score-text" id="dodge-score">0.00초</div>
+                    <div class="dodge-result-score" id="dodge-result-score" style="display: none;">0.00초 생존!</div>
                     <div class="dodge-result-msg" id="dodge-result-msg">생존 시간이 곧 당신의 티어입니다.</div>
                     <button class="dodge-start-btn" id="start-dodge-btn">훈련 시작</button>
                 </div>
@@ -484,10 +527,30 @@
                 <img src="https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/SummonerFlash.png" alt="Flash">
             </div>
 
-            <button class="clicker-start-btn" id="start-clicker-btn">훈련 시작</button>
+            <div class="clicker-result-score" id="clicker-result-score" style="display: none;">0회 점멸!</div>
             <p id="clicker-result-msg" class="clicker-result-msg"></p>
+            <button class="clicker-start-btn" id="start-clicker-btn">훈련 시작</button>
             
             <button class="close-btn" id="close-clicker-modal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- T1 시그니처 챔피언 짝맞추기 게임 (절대 엑박 안 뜨는 공식 챔피언 얼굴들!) -->
+    <div class="modal-overlay" id="memory-modal">
+        <div class="modal-box">
+            <div class="memory-title">시그니처 챔피언 맞추기</div>
+            <p style="font-size:0.85rem; color:#ccc; margin:0;">30초 안에 T1 멤버들의 챔피언을 맞추세요!</p>
+            
+            <div class="memory-stats" id="memory-time-text">제한 시간: 30.00 초</div>
+            
+            <div class="memory-grid" id="memory-grid">
+                <!-- 자바스크립트로 카드가 생성될 위치 -->
+            </div>
+
+            <button class="memory-start-btn" id="start-memory-btn">게임 시작</button>
+            <p id="memory-result-msg" style="color: #ffcc00; font-weight: bold; margin-top: 10px; display: none;">클리어!</p>
+            
+            <button class="close-btn" id="close-memory-modal">CLOSE</button>
         </div>
     </div>
 
@@ -521,6 +584,9 @@
             </button>
             <button class="gacha-btn clicker-game-btn" id="open-clicker-modal">
                 <span>점멸 피지컬 훈련</span>
+            </button>
+            <button class="gacha-btn memory-game-btn" id="open-memory-modal">
+                <span>시그니처 짝맞추기</span>
             </button>
         </div>
 
@@ -694,11 +760,11 @@
 
         // ---------------- 1. 가챠 시스템 ----------------
         const players = [
-            { name: "Faker", img: "https://wsrv.nl/?url=i2.ruliweb.com/img/25/11/09/19a688f4c173a2202.jpg", msg: "👑 대상혁과 함께라면 패배는 거기까지! 오늘 직관 승률 100%!" },
-            { name: "Doran", img: "https://wsrv.nl/?url=i2.ruliweb.com/img/25/11/09/19a67d7d26d4c4198.png", msg: "🛡️ 도란과 함께 오늘 홈그라운드 꿀잼 직관 보장!" },
-            { name: "Oner", img: "https://wsrv.nl/?url=i1.ruliweb.com/img/21/08/28/17b8be44b2d10c24c.jpg", msg: "⚡ 오너 피지컬 발동! 오늘 당신의 직관 텐션 급상승!" },
-            { name: "Peyz", img: "https://wsrv.nl/?url=upload3.inven.co.kr/upload/2025/12/18/bbs/i1464132534.jpg?MW=800", msg: "🎯 T1의 막내 페이즈 등장! 마법 같은 펜타킬급 텐션으로 즐겨요!" },
-            { name: "Keria", img: "https://wsrv.nl/?url=image.fmkorea.com/files/attach/new4/20241112/7687110740_14339012_7c77784d872a84c2676ca6e79d4fc56b.png", msg: "👁️ 역천괴 케리아의 완벽한 설계! 오늘 직관 승리를 배달해 드립니다!" }
+            { name: "Faker", img: "https://i.namu.wiki/i/lXk-QGwNN1SozkiftTC4o-hyHa9TFic6zqSKOU_Pr0zm03WnqwNiV7a29-RRSK5NzizWKxkUlh5pQ0fxDjU3OA.webp", msg: "👑 대상혁과 함께라면 패배는 거기까지! 오늘 직관 승률 100%!" },
+            { name: "Doran", img: "https://i.namu.wiki/i/8UxGPyA6XQRCDHZIRfZh0khEkYRf6ayPG8N1DMkuEyFsCCd4w7QYJm6t3ah8VHOBKfKPmbsEPdDkAorY_ox_QA.webp", msg: "🛡️ 도란과 함께 오늘 홈그라운드 꿀잼 직관 보장!" },
+            { name: "Oner", img: "https://i.namu.wiki/i/ddZFejge7MCfSWp_k4qGX0QOQJWYw_VtfTbvTPSc7BdFPv_bhCbBRWYICFXg1CvjXci9dFOkZGdtV07Pb-FhKw.webp", msg: "⚡ 오너 피지컬 발동! 오늘 당신의 직관 텐션 급상승!" },
+            { name: "Peyz", img: "https://i.namu.wiki/i/no8hLombc8-ykbyRM0LIm8UyPXCxnJ33SvfYsirCjeQSjVBzDehNBEoVy8tW6oShWk5ngMgQhxW359uUgH4KzQ6CHzLYR7j-x3LMh24gUWbc_N6fyINkjI0uYDK62n9U7N4Bm9SL0Ssz8NLrBKxVxg.webp", msg: "🎯 T1의 막내 페이즈 등장! 마법 같은 펜타킬급 텐션으로 즐겨요!" },
+            { name: "Keria", img: "https://i.namu.wiki/i/zErJ7Bg3WoqD1ninHZtpupeyFRI73GLEOzXYa73D5ObTOASAb9_4hx7vbJoRwdKJ95Vs52k1pLojixqSaKdWvg.webp", msg: "👁️ 역천괴 케리아의 완벽한 설계! 오늘 직관 승리를 배달해 드립니다!" }
         ];
 
         const startBtn = document.getElementById('start-gacha');
@@ -1047,17 +1113,16 @@
                 let msg = "";
                 let color = "";
                 
-                // 점수별 찰진 멘트 & 컬러 텍스트 지정! (커트라인 5% 하향)
-                if (normalizedScore < 70) { 
+                if (normalizedScore < 71) { 
                     msg = "이거 완전 버그다모!!<br><span style='font-size:0.85rem; color:#aaa;'>눈 감고 한 거 아니지? (머쓱)</span>";
                     color = "#ccc";
-                } else if (normalizedScore < 130) { 
+                } else if (normalizedScore < 142) { 
                     msg = "어어? 쪼오끔 아쉽다 그치?<br><span style='font-size:0.85rem; color:#aaa;'>그래도 뭐 나쁘지 않다모~</span>";
                     color = "#00ff00";
-                } else if (normalizedScore < 210) { 
+                } else if (normalizedScore < 228) { 
                     msg = "오 쫌 치네?<br><span style='font-size:0.85rem; color:#aaa;'>운타라식 안정적인 버섯 파밍! 🍄</span>";
                     color = "#ffaa00";
-                } else if (normalizedScore < 300) { 
+                } else if (normalizedScore < 313) { 
                     msg = "와 대박인데?!<br><span style='font-size:0.85rem; color:#aaa;'>피지컬 완전 폼 미쳤다모!</span>";
                     color = "#ffcc00";
                 } else { 
@@ -1080,7 +1145,6 @@
             tCtx.clearRect(0, 0, teemoCanvas.width, teemoCanvas.height);
 
             let progress = 1 - (teemoTimeLeft / teemoTotalTime);
-            // 난이도 매운맛 패치: 기본 생성률과 속도를 확 올림!
             let spawnRate = 0.05 + (progress * 0.15); 
             let baseSpeed = 4.5 + (progress * 7.5); 
 
@@ -1090,7 +1154,7 @@
                     y: -30,
                     width: 30,
                     height: 30,
-                    speed: baseSpeed + (Math.random() * 3) // 속도 편차도 크게 해서 불규칙하게
+                    speed: baseSpeed + (Math.random() * 3) 
                 });
             }
 
@@ -1098,7 +1162,6 @@
                 let m = mushrooms[i];
                 m.y += m.speed;
 
-                // 판정 빡세게: 예전엔 10이었는데 15로 늘려서 정중앙에서만 먹어지게 함!
                 if (m.x < teemo.x + teemo.width - 15 &&
                     m.x + m.width > teemo.x + 15 &&
                     m.y < teemo.y + teemo.height &&
@@ -1207,9 +1270,14 @@
             dCtx.clearRect(0, 0, dodgeCanvas.width, dodgeCanvas.height);
             player.x = 150; player.y = 150;
             enemies = [];
+            
+            document.getElementById('dodge-result-score').style.display = "none";
+            dodgeScoreEl.style.display = "block";
             dodgeScoreEl.innerText = "0.00초";
+            
             dodgeResultMsg.innerHTML = "손가락으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
             dodgeResultMsg.style.color = "#ccc";
+            
             dodgeStartBtn.style.display = "block";
             dodgeStartBtn.innerText = "훈련 시작";
             dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
@@ -1222,11 +1290,15 @@
             dodgeStartTime = Date.now();
             enemies = [];
             frameCount = 0;
+            
+            document.getElementById('dodge-result-score').style.display = "none";
+            dodgeScoreEl.style.display = "block";
+            dodgeScoreEl.innerText = "0.00초";
+            
             dodgeOverlay.style.background = "transparent"; 
             dodgeOverlay.style.pointerEvents = "none"; 
             dodgeStartBtn.style.display = "none";
             dodgeResultMsg.innerText = "";
-            dodgeScoreEl.innerText = "0.00초";
             dodgeLoop();
         }
 
@@ -1333,17 +1405,36 @@
             dodgePlaying = false;
             dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
             dodgeOverlay.style.pointerEvents = "auto"; 
-            dodgeStartBtn.style.display = "block";
-            dodgeStartBtn.innerText = "다시 도전";
-
+            
+            dodgeScoreEl.style.display = "none";
+            
             let msg = "";
             let color = "";
-            if (dodgeTime < 5) { msg = "아니 반응속도 실화? 골드도 이것보단 잘 피하겠다!"; color = "#ffaa00"; }
-            else if (dodgeTime < 15) { msg = "나쁘지 않은 무빙! 하지만 대상혁에겐 한참 모자랍니다."; color = "#ccc"; }
-            else if (dodgeTime < 30) { msg = "오! 폼 미쳤다! 한타 때 딜 좀 넣는 원딜 수준 무빙!"; color = "#00ff00"; }
-            else { msg = "당신이 바로 2026년 T1의 숨겨진 에이스! 무빙 인정합니다 👑"; color = "#ffcc00"; }
+            
+            if (dodgeTime < 5) { 
+                msg = "아니 반응속도 실화?<br><span style='font-size:0.85rem; color:#aaa;'>골드도 이것보단 잘 피하겠다! 😭</span>"; 
+                color = "#ccc"; 
+            } else if (dodgeTime < 15) { 
+                msg = "나쁘지 않은 무빙!<br><span style='font-size:0.85rem; color:#aaa;'>하지만 대상혁에겐 한참 모자랍니다. 🐢</span>"; 
+                color = "#00ff00"; 
+            } else if (dodgeTime < 30) { 
+                msg = "오! 폼 미쳤다!<br><span style='font-size:0.85rem; color:#aaa;'>한타 때 딜 좀 넣는 원딜 수준 무빙! ⚡</span>"; 
+                color = "#ffaa00"; 
+            } else { 
+                msg = "당신이 바로 2026년 T1의 에이스!<br><span style='font-size:0.85rem; color:#aaa;'>무빙 인정합니다 👑</span>"; 
+                color = "#ffcc00"; 
+            }
 
-            dodgeResultMsg.innerHTML = `<span style="color:${color}">${msg}</span><br><br>생존 기록: ${dodgeTime.toFixed(2)}초`;
+            const finalScoreEl = document.getElementById('dodge-result-score');
+            finalScoreEl.innerText = dodgeTime.toFixed(2) + "초 생존!";
+            finalScoreEl.style.color = color;
+            finalScoreEl.style.display = "block";
+
+            dodgeResultMsg.innerHTML = msg;
+            dodgeResultMsg.style.color = "#fff"; // 멘트 기본색 통일 (강조는 span으로)
+            
+            dodgeStartBtn.style.display = "block";
+            dodgeStartBtn.innerText = "다시 도전";
         }
 
         // ---------------- 6. 점멸 피지컬 훈련 ----------------
@@ -1394,7 +1485,10 @@
             clickerTimeText.innerText = "10.00 초";
             clickerTimeText.style.color = "#fff";
             clickerScoreText.innerText = "0 HIT";
+            
+            document.getElementById('clicker-result-score').style.display = "none";
             clickerResultMsg.style.display = "none";
+            
             startClickerBtn.style.display = "block";
             startClickerBtn.innerText = "훈련 시작";
             flashTarget.style.pointerEvents = "none";
@@ -1408,8 +1502,11 @@
             isClickerPlaying = true;
             clickerTimeText.style.color = "#fff";
             clickerScoreText.innerText = "0 HIT";
-            startClickerBtn.style.display = "none";
+            
+            document.getElementById('clicker-result-score').style.display = "none";
             clickerResultMsg.style.display = "none";
+            startClickerBtn.style.display = "none";
+            
             flashTarget.style.pointerEvents = "auto";
             flashTarget.style.filter = "grayscale(0%)";
             
@@ -1454,17 +1551,34 @@
             let msg = "";
             let color = "";
 
-            if(clickCount < 30) { msg = "플래시를 아끼다 똥이 됐습니다... 생존 실패!"; color = "#ccc"; }
-            else if(clickCount < 60) { msg = "무난한 점멸 반응! 하지만 한 틱 차이로 죽었네요."; color = "#00ff00"; }
-            else if(clickCount < 90) { msg = "빛의 속도! CC기가 풀리자마자 칼점멸 성공 ⚡"; color = "#ffaa00"; }
-            else { msg = "광클의 신! 대상혁급 반응속도로 스킬을 전부 피했습니다 👑"; color = "#ffcc00"; }
+            if(clickCount < 30) { 
+                msg = "플래시를 아끼다 똥이 됐습니다...<br><span style='font-size:0.85rem; color:#aaa;'>생존 실패! 😭</span>"; 
+                color = "#ccc"; 
+            } else if(clickCount < 60) { 
+                msg = "무난한 점멸 반응!<br><span style='font-size:0.85rem; color:#aaa;'>하지만 한 틱 차이로 죽었네요. 🐢</span>"; 
+                color = "#00ff00"; 
+            } else if(clickCount < 90) { 
+                msg = "빛의 속도!<br><span style='font-size:0.85rem; color:#aaa;'>CC기가 풀리자마자 칼점멸 성공 ⚡</span>"; 
+                color = "#ffaa00"; 
+            } else { 
+                msg = "광클의 신!<br><span style='font-size:0.85rem; color:#aaa;'>대상혁급 반응속도로 스킬을 전부 피했습니다 👑</span>"; 
+                color = "#ffcc00"; 
+            }
+            
+            // 초당 타수(aps)도 자연스럽게 멘트 아래에 추가!
+            msg += `<br><span style='font-size:0.75rem; color:#888; margin-top:5px; display:inline-block;'>(초당 ${aps}타)</span>`;
 
-            clickerResultMsg.innerHTML = `<span style="color:${color}">${msg}</span><br>기록: 10초당 ${clickCount}회 점멸 (초당 ${aps}타)`;
+            const finalScoreEl = document.getElementById('clicker-result-score');
+            finalScoreEl.innerText = clickCount + "회 점멸!";
+            finalScoreEl.style.color = color;
+            finalScoreEl.style.display = "block";
+
+            clickerResultMsg.innerHTML = msg;
+            clickerResultMsg.style.color = "#fff"; // 멘트 기본색 통일
             clickerResultMsg.style.display = "block";
             
             startClickerBtn.style.display = "block";
             startClickerBtn.innerText = "다시 도전";
         }
-    </script>
-</body>
-</html>
+
+        // ---------------- 7. 시그니처 챔피언 짝맞추기 게임 (절대 엑박 안 뜨는 공식 챔피언 얼굴들!) ----------------
