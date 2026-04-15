@@ -329,12 +329,16 @@
         .teemo-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
         .teemo-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; margin-bottom: 20px; text-align: center; }
 
-        /* ---------------- 무빙 훈련 스타일 ---------------- */
+        /* ---------------- 유체화 무빙 훈련 스타일 ---------------- */
         #dodge-modal .modal-box { border-color: #b366ff; }
         .dodge-title { color: #b366ff; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 5px; }
         .dodge-canvas-container { position: relative; width: 100%; height: 300px; background: #111; border: 2px solid #b366ff; border-radius: 5px; margin: 15px 0; overflow: hidden; touch-action: none; cursor: crosshair; }
         #dodge-game-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
         .dodge-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 15px; transition: background 0.3s ease; }
+        
+        /* 게임 오버 시 캔버스 배경을 깔끔하게 블러 처리 */
+        .dodge-overlay.blur-active { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        
         .dodge-score-text { font-size: 1.5rem; font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 900; margin-bottom: 10px; }
         .dodge-start-btn { background: linear-gradient(90deg, #7a4aab, #b366ff); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
         .dodge-start-btn:hover { background: #fff; transform: translateY(-2px); }
@@ -354,6 +358,10 @@
         }
         .flash-target img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .flash-target:active { transform: scale(0.9); box-shadow: 0 0 50px #ffcc00; }
+        
+        /* 점멸 게임 숨김용 클래스 */
+        .clicker-hidden { display: none !important; }
+        
         .clicker-start-btn { background: linear-gradient(90deg, #b38f00, #ffcc00); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 10px; }
         .clicker-start-btn:hover { background: #fff; color: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4); }
         .clicker-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); text-align: center; display: none; }
@@ -451,11 +459,11 @@
         </div>
     </div>
 
-    <!-- 무빙 훈련 팝업 모달 -->
+    <!-- 유체화 무빙 훈련 팝업 모달 -->
     <div class="modal-overlay" id="dodge-modal">
         <div class="modal-box">
-            <div class="dodge-title">무빙 훈련</div>
-            <p style="font-size:0.85rem; color:#ccc; margin:0;">손가락으로 투사체를 끝까지 피하세요!</p>
+            <div class="dodge-title">유체화 무빙 훈련</div>
+            <p style="font-size:0.85rem; color:#ccc; margin:0;">유체화를 꾹 누른 채로 사방에서 날아오는 애쉬 궁을 피하세요!</p>
             
             <div class="dodge-canvas-container">
                 <canvas id="dodge-game-canvas" width="300" height="300"></canvas>
@@ -478,7 +486,7 @@
             <div class="clicker-title">점멸 피지컬 훈련</div>
             <p style="font-size:0.85rem; color:#ccc; margin:0;">10초 동안 점멸(F)을 미친 듯이 연타하세요!</p>
             
-            <div class="clicker-stats">
+            <div class="clicker-stats" id="clicker-stats-area">
                 <span id="clicker-time-text">10.00 초</span>
                 <span id="clicker-score-text" style="color: #ffcc00;">0 HIT</span>
             </div>
@@ -521,7 +529,7 @@
                 <span>티모 버섯 받기</span>
             </button>
             <button class="gacha-btn dodge-game-btn" id="open-dodge-modal">
-                <span>무빙 훈련</span>
+                <span>유체화 무빙 훈련</span>
             </button>
             <button class="gacha-btn clicker-game-btn" id="open-clicker-modal">
                 <span>점멸 피지컬 훈련</span>
@@ -1166,7 +1174,7 @@
         teemoCanvas.addEventListener('mousemove', moveTeemo);
 
 
-        // ---------------- 5. 무빙 훈련 ----------------
+        // ---------------- 5. 유체화 무빙 훈련 (NEW 테마) ----------------
         const openDodgeBtn = document.getElementById('open-dodge-modal');
         const dodgeModal = document.getElementById('dodge-modal');
         const closeDodgeBtn = document.getElementById('close-dodge-modal');
@@ -1182,10 +1190,15 @@
         let dodgeTime = 0;
         let dodgeAnimationId;
         
-        let player = { x: 150, y: 150, radius: 8 };
+        let player = { x: 150, y: 150, radius: 12 };
         let enemies = [];
         let enemySpawnRate = 30; 
         let frameCount = 0;
+
+        // 유체화 이미지 로드 (무적의 라이엇 공식 이미지)
+        const imgGhost = new Image();
+        imgGhost.crossOrigin = "Anonymous";
+        imgGhost.src = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/SummonerHaste.png";
 
         openDodgeBtn.addEventListener('click', () => {
             dodgeModal.classList.add('active');
@@ -1213,13 +1226,16 @@
             dodgeScoreEl.style.display = "block";
             dodgeScoreEl.innerText = "0.00초";
             
-            dodgeResultMsg.innerHTML = "손가락으로 흰색 공을 꾹 누른 채로<br>날아오는 투사체들을 피하세요!";
+            dodgeResultMsg.innerHTML = "유체화(흰색 공)를 꾹 누른 채로<br>사방에서 날아오는 애쉬 궁을 피하세요!";
             dodgeResultMsg.style.color = "#ccc";
             
             dodgeStartBtn.style.display = "block";
             dodgeStartBtn.innerText = "훈련 시작";
+            
             dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
+            dodgeOverlay.classList.remove('blur-active'); // 블러 해제
             dodgeOverlay.style.pointerEvents = "auto"; 
+            
             drawDodgeFrame();
         }
 
@@ -1234,6 +1250,7 @@
             dodgeScoreEl.innerText = "0.00초";
             
             dodgeOverlay.style.background = "transparent"; 
+            dodgeOverlay.classList.remove('blur-active');
             dodgeOverlay.style.pointerEvents = "none"; 
             dodgeStartBtn.style.display = "none";
             dodgeResultMsg.innerText = "";
@@ -1285,24 +1302,63 @@
         function drawDodgeFrame() {
             dCtx.clearRect(0, 0, dodgeCanvas.width, dodgeCanvas.height);
 
-            dCtx.fillStyle = '#fff';
-            dCtx.beginPath();
-            dCtx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            dCtx.fill();
-            dCtx.strokeStyle = '#b366ff';
-            dCtx.lineWidth = 2;
-            dCtx.stroke();
+            // 유체화 아이콘 그리기 (원형 마스크 적용)
+            if (imgGhost.complete && imgGhost.naturalWidth > 0) {
+                dCtx.save();
+                dCtx.beginPath();
+                dCtx.arc(player.x, player.y, player.radius + 4, 0, Math.PI * 2);
+                dCtx.closePath();
+                dCtx.clip();
+                dCtx.drawImage(imgGhost, player.x - player.radius - 4, player.y - player.radius - 4, (player.radius + 4) * 2, (player.radius + 4) * 2);
+                dCtx.restore();
+                
+                // 테두리
+                dCtx.beginPath();
+                dCtx.arc(player.x, player.y, player.radius + 4, 0, Math.PI * 2);
+                dCtx.strokeStyle = '#b366ff';
+                dCtx.lineWidth = 2;
+                dCtx.stroke();
+            } else {
+                dCtx.fillStyle = '#fff';
+                dCtx.beginPath();
+                dCtx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+                dCtx.fill();
+            }
 
+            // 애쉬 화살(빨간색 투사체) 그리기
             for (let i = 0; i < enemies.length; i++) {
                 let e = enemies[i];
-                dCtx.fillStyle = '#e2012d'; 
+                dCtx.save();
+                dCtx.translate(e.x, e.y);
+                dCtx.rotate(Math.atan2(e.vy, e.vx));
+                
+                dCtx.shadowBlur = 10;
+                dCtx.shadowColor = '#e2012d';
+                dCtx.fillStyle = '#fff';
+                dCtx.strokeStyle = '#e2012d';
+                dCtx.lineWidth = 2;
+
+                // 화살 뼈대
                 dCtx.beginPath();
-                dCtx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+                dCtx.moveTo(e.radius * 1.8, 0); 
+                dCtx.lineTo(-e.radius, e.radius * 0.8); 
+                dCtx.lineTo(-e.radius * 0.4, 0); 
+                dCtx.lineTo(-e.radius, -e.radius * 0.8); 
+                dCtx.closePath();
                 dCtx.fill();
-                dCtx.fillStyle = 'rgba(226, 1, 45, 0.3)';
+                dCtx.stroke();
+                
+                // 화살 내부 붉은 코어
+                dCtx.fillStyle = '#e2012d';
                 dCtx.beginPath();
-                dCtx.arc(e.x - (e.vx*2), e.y - (e.vy*2), e.radius*0.8, 0, Math.PI * 2);
+                dCtx.moveTo(e.radius * 1.2, 0); 
+                dCtx.lineTo(-e.radius*0.6, e.radius * 0.4); 
+                dCtx.lineTo(-e.radius * 0.2, 0); 
+                dCtx.lineTo(-e.radius*0.6, -e.radius * 0.4); 
+                dCtx.closePath();
                 dCtx.fill();
+
+                dCtx.restore();
             }
         }
 
@@ -1324,7 +1380,8 @@
                 e.y += e.vy;
 
                 let dist = Math.hypot(player.x - e.x, player.y - e.y);
-                if (dist < player.radius + e.radius - 2) { 
+                // 히트박스 조금 더 정교하게 수정
+                if (dist < player.radius + e.radius - 4) { 
                     gameOverDodge();
                     return; 
                 }
@@ -1341,7 +1398,8 @@
 
         function gameOverDodge() {
             dodgePlaying = false;
-            dodgeOverlay.style.background = "rgba(0, 0, 0, 0.85)";
+            dodgeOverlay.style.background = "rgba(0, 0, 0, 0.5)";
+            dodgeOverlay.classList.add('blur-active'); // 배경 블러 짠!
             dodgeOverlay.style.pointerEvents = "auto"; 
             
             dodgeScoreEl.style.display = "none";
@@ -1350,7 +1408,7 @@
             let color = "";
             
             if (dodgeTime < 5) { 
-                msg = "아니 반응속도 실화?<br><span style='font-size:0.85rem; color:#aaa;'>골드도 이것보단 잘 피하겠다! 😭</span>"; 
+                msg = "아니 반응속도 실화?<br><span style='font-size:0.85rem; color:#aaa;'>애쉬 궁 다 맞아주네 😭</span>"; 
                 color = "#ccc"; 
             } else if (dodgeTime < 15) { 
                 msg = "나쁘지 않은 무빙!<br><span style='font-size:0.85rem; color:#aaa;'>하지만 대상혁에겐 한참 모자랍니다. 🐢</span>"; 
@@ -1369,7 +1427,7 @@
             finalScoreEl.style.display = "block";
 
             dodgeResultMsg.innerHTML = msg;
-            dodgeResultMsg.style.color = "#fff"; // 멘트 기본색 통일 (강조는 span으로)
+            dodgeResultMsg.style.color = "#fff"; 
             
             dodgeStartBtn.style.display = "block";
             dodgeStartBtn.innerText = "다시 도전";
@@ -1420,6 +1478,11 @@
             isClickerPlaying = false;
             clickerTimeLeft = 10.00;
             clickCount = 0;
+            
+            // 숨겨뒀던 게임 요소 다시 보여주기
+            document.getElementById('clicker-stats-area').classList.remove('clicker-hidden');
+            flashTarget.classList.remove('clicker-hidden');
+            
             clickerTimeText.innerText = "10.00 초";
             clickerTimeText.style.color = "#fff";
             clickerScoreText.innerText = "0 HIT";
@@ -1482,8 +1545,10 @@
             clearInterval(clickerTimer);
             isClickerPlaying = false;
             flashTarget.style.pointerEvents = "none";
-            flashTarget.style.filter = "grayscale(100%)";
-            flashTarget.style.transform = "scale(1)";
+            
+            // 게임 끝나면 화면 깔끔하게 하려고 게임 요소 싹 숨기기!
+            document.getElementById('clicker-stats-area').classList.add('clicker-hidden');
+            flashTarget.classList.add('clicker-hidden');
 
             let aps = (clickCount / 10).toFixed(1);
             let msg = "";
@@ -1503,7 +1568,6 @@
                 color = "#ffcc00"; 
             }
             
-            // 초당 타수(aps)도 자연스럽게 멘트 아래에 추가!
             msg += `<br><span style='font-size:0.75rem; color:#888; margin-top:5px; display:inline-block;'>(초당 ${aps}타)</span>`;
 
             const finalScoreEl = document.getElementById('clicker-result-score');
@@ -1512,7 +1576,7 @@
             finalScoreEl.style.display = "block";
 
             clickerResultMsg.innerHTML = msg;
-            clickerResultMsg.style.color = "#fff"; // 멘트 기본색 통일
+            clickerResultMsg.style.color = "#fff"; 
             clickerResultMsg.style.display = "block";
             
             startClickerBtn.style.display = "block";
