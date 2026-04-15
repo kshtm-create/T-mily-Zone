@@ -862,8 +862,8 @@
             if (targetPixels === 0) return;
 
             let coverage = (hitPixels / targetPixels) * 100;
-            let penalty = (overdrawPixels / targetPixels) * 150; 
-            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 1.5) - penalty)));
+            let penalty = (overdrawPixels / targetPixels) * 120; 
+            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 1.8) - penalty)));
 
             let msg = ""; let color = "#fff";
 
