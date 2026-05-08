@@ -501,7 +501,7 @@
 
     <div class="hud-container">
         <div class="header">
-            <img src="https://i.namu.wiki/i/QfDFIJeAA4M15ivmQ58m4kbl3LsbM8bjetq2kutJscin0y_s5Jjq4ZWFxxkhOrIJYzoXRgpDQik9NfBCrNZLlg.webp" alt="T1 Logo" class="logo" onclick="alert('티원입니다~');">
+           <img src="..." alt="T1 Logo" class="logo" id="t1-logo">
             <div class="stars">★★★★★★</div>
             <div class="star-years">13' 15' 16' 23' 24' 25'</div>
         </div>
@@ -655,6 +655,19 @@
     </div>
 
     <script>
+        document.getElementById('t1-logo').addEventListener('click', () => {
+  const toast = document.createElement('div');
+  toast.textContent = '티원입니다~ 🏆';
+  toast.style.cssText = `
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--t1-red); color: #fff; padding: 0.8rem 1.5rem;
+    font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem;
+    border-radius: 5px; z-index: 9999; box-shadow: 0 0 20px var(--t1-red-glow);
+    animation: fadeIn 0.3s ease;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+});
         const texts = [
             "\"모든 길은 결국, 저를 통합니다.\"",
             "\"가장 높은 산, 가장 긴 강.\"",
