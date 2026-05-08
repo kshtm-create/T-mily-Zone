@@ -371,6 +371,28 @@
 
         @keyframes flash { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes glitch-anim {
+  0%, 90%, 100% {
+    transform: translate(0);
+    filter: drop-shadow(0 0 10px var(--t1-red));
+  }
+  92% {
+    transform: translate(-3px, 1px);
+    filter: drop-shadow(0 0 10px #e2012d) hue-rotate(90deg);
+  }
+  94% {
+    transform: translate(3px, -1px);
+    filter: drop-shadow(0 0 10px #e2012d) hue-rotate(-90deg);
+  }
+  96% {
+    transform: translate(-2px, 2px);
+    filter: drop-shadow(0 0 20px #ff0044) brightness(1.5);
+  }
+  98% {
+    transform: translate(2px, -2px);
+    filter: drop-shadow(0 0 10px var(--t1-red));
+  }
+}
         @keyframes blink { 50% { opacity: 0; } }
         
         @media (min-width: 600px) { .quest-list { justify-content: center; } }
@@ -573,7 +595,7 @@
             <div class="player-grid">
                 <div class="player-card meme-card">
                     <div class="player-img doran-img">
-                        <img src="https://i.namu.wiki/i/8UxGPyA6XQRCDHZIRfZh0khEkYRf6ayPG8N1DMkuEyFsCCd4w7QYJm6t3ah8VHOBKfKPmbsEPdDkAorY_ox_QA.webp" alt="Doran" class="normal-img" style="object-position: center 40%;">
+                        <img src="https://wsrv.nl/?url=i.namu.wiki/i/8UxGPyA6XQRCDHZIRfZh0khEkYRf6ayPG8N1DMkuEyFsCCd4w7QYJm6t3ah8VHOBKfKPmbsEPdDkAorY_ox_QA.webp" alt="Doran" class="normal-img" style="object-position: center 40%;">
                         <img src="./19a679db86513f651.png" alt="Doran Meme" class="goofy-img">
                     </div>
                     <div class="player-role">TOP</div>
@@ -586,8 +608,8 @@
                 </div>
                 <div class="player-card meme-card">
                     <div class="player-img oner-img">
-                        <img src="https://i.namu.wiki/i/ddZFejge7MCfSWp_k4qGX0QOQJWYw_VtfTbvTPSc7BdFPv_bhCbBRWYICFXg1CvjXci9dFOkZGdtV07Pb-FhKw.webp" alt="Oner" class="normal-img">
-                        <img src="https://i.namu.wiki/i/StEJkYh3i6c2L7lIzgPq5U-Dmx_jJD2I7CZDwwBpPxosREzSF9eqNQHzpbgzIRLbiEqAqK5J6kN-z78HD0Y4-Q.webp" alt="Oner Meme" class="goofy-img">
+                        <img src="https://wsrv.nl/?url=i.namu.wiki/i/ddZFejge7MCfSWp_k4qGX0QOQJWYw_VtfTbvTPSc7BdFPv_bhCbBRWYICFXg1CvjXci9dFOkZGdtV07Pb-FhKw.webp" alt="Oner" class="normal-img">
+                        <img src="https://wsrv.nl/?url=i.namu.wiki/i/StEJkYh3i6c2L7lIzgPq5U-Dmx_jJD2I7CZDwwBpPxosREzSF9eqNQHzpbgzIRLbiEqAqK5J6kN-z78HD0Y4-Q.webp" alt="Oner Meme" class="goofy-img">
                     </div>
                     <div class="player-role">JUNGLE</div>
                     <div class="player-name">Oner <span>문현준</span></div>
@@ -612,7 +634,7 @@
                 </div>
                 <div class="player-card meme-card">
                     <div class="player-img">
-                        <img src="https://i.namu.wiki/i/zErJ7Bg3WoqD1ninHZtpupeyFRI73GLEOzXYa73D5ObTOASAb9_4hx7vbJoRwdKJ95Vs52k1pLojixqSaKdWvg.webp" alt="Keria" class="normal-img">
+                        <img src="https://wsrv.nl/?url=i.namu.wiki/i/zErJ7Bg3WoqD1ninHZtpupeyFRI73GLEOzXYa73D5ObTOASAb9_4hx7vbJoRwdKJ95Vs52k1pLojixqSaKdWvg.webp" alt="Keria" class="normal-img">
                         <img src="https://wsrv.nl/?url=image.fmkorea.com/files/attach/new4/20241112/7687110740_14339012_7c77784d872a84c2676ca6e79d4fc56b.png" alt="Keria Meme" class="goofy-img">
                     </div>
                     <div class="player-role">SUPPORT</div>
@@ -629,7 +651,7 @@
             <div class="player-grid">
                 <div class="player-card">
                     <div class="player-img">
-                        <img src="https://i.namu.wiki/i/tqdooZFIENhC9Bu9-dYVpcqpswveVDd1iSgRCYGAiRuY2Ai1p7-C2wO0QOM5xzvcJCv0xTd6WHAqZqpj6uTNwg.webp" alt="Tom" class="normal-img">
+                        <img src="https://wsrv.nl/?url=i.namu.wiki/i/tqdooZFIENhC9Bu9-dYVpcqpswveVDd1iSgRCYGAiRuY2Ai1p7-C2wO0QOM5xzvcJCv0xTd6WHAqZqpj6uTNwg.webp" alt="Tom" class="normal-img">
                     </div>
                     <div class="player-role">HEAD COACH</div>
                     <div class="player-name">Tom <span>임재현</span></div>
@@ -640,7 +662,7 @@
                 </div>
                 <div class="player-card">
                     <div class="player-img">
-                        <img src="https://i.namu.wiki/i/Hv8ikVU3PXCxAIlx0DDDPPr9Gj5UqrYeO1rT7YyvCHEbExXRD4RfnmaHmCBnhX7XvwPozsuLifEfSk60pJGvNA.webp" alt="Mata" class="normal-img">
+                        <img src="https://wsrv.nl/?url=i.namu.wiki/i/Hv8ikVU3PXCxAIlx0DDDPPr9Gj5UqrYeO1rT7YyvCHEbExXRD4RfnmaHmCBnhX7XvwPozsuLifEfSk60pJGvNA.webp" alt="Mata" class="normal-img">
                     </div>
                     <div class="player-role">COACH</div>
                     <div class="player-name">Mata <span>조세형</span></div>
