@@ -501,7 +501,7 @@
 
     <div class="hud-container">
         <div class="header">
-           <img src="<img src="T1 LOGO.svg" alt="T1 Logo" class="logo" id="t1-logo">
+           <img src="<img src="./T1 LOGO.svg" alt="T1 Logo" class="logo" id="t1-logo">
             <div class="stars">★★★★★★</div>
             <div class="star-years">13' 15' 16' 23' 24' 25'</div>
         </div>
@@ -660,9 +660,9 @@
   toast.textContent = '티원입니다~ 🏆';
   toast.style.cssText = `
     position: fixed;
-    bottom: 40px;
+    top: 80px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(-10px);
     background: #111;
     color: #fff;
     padding: 0.75rem 1.5rem;
@@ -686,7 +686,7 @@
   });
   setTimeout(() => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateX(-50%) translateY(10px)';
+    toast.style.transform = 'translateX(-50%) translateY(-10px)';
     setTimeout(() => toast.remove(), 300);
   }, 2000);
 });
