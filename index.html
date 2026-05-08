@@ -164,13 +164,13 @@
         .clicker-game-btn { background: linear-gradient(90deg, #4d3f00, #806600); border-color: #b38f00; }
         .clicker-game-btn:hover { background: #ffcc00; color: #000; border-color: #ffcc00; }
 
-        /* 링크 리스트 (간격 10% 축소 패치) */
+        /* 링크 리스트 */
         .quest-list {
             display: flex;
             flex-wrap: nowrap; 
             justify-content: flex-start;
             align-items: center;
-            gap: 0.9rem; /* 1rem에서 0.9rem으로 10% 축소 */
+            gap: 0.9rem; 
             margin-top: 0.5rem;
             padding: 0.5rem 1rem 2rem 1rem; 
             overflow-x: auto; 
@@ -228,16 +228,20 @@
         .meme-card.active .normal-img { opacity: 0; transform: scale(0.95); }
         .meme-card.active .goofy-img { opacity: 1; transform: scale(1); }
 
-        .peyz-img { background-color: #e4e4e4; }
-        .peyz-img .goofy-img { object-position: center 20%; transform-origin: center center; }
-        .meme-card.active .peyz-img .goofy-img { transform: scale(1.05) rotate(0deg); }
-
-        .doran-img .goofy-img { object-position: bottom center; transform-origin: bottom center; }
+        /* --- 선수들 얼굴 크기 밸런스 패치 --- */
+        .doran-img .normal-img { transform: scale(1.1); transform-origin: top center; }
         .meme-card.active .doran-img .goofy-img { transform: scale(1.05) rotate(0deg); }
 
-        /* --- 오너 이미지 전용 스타일 추가 --- */
+        .oner-img .normal-img { transform: scale(1.4); transform-origin: top center; }
         .oner-img .goofy-img { transform-origin: top center; object-position: top center; }
         .meme-card.active .oner-img .goofy-img { transform: scale(1.4) rotate(0deg); }
+
+        .peyz-img { background-color: #e4e4e4; }
+        .peyz-img .normal-img { transform: scale(0.85); transform-origin: bottom center; }
+        .meme-card.active .peyz-img .goofy-img { transform: scale(1.05) rotate(0deg); }
+
+        .keria-img .normal-img { transform: scale(1.2); transform-origin: top center; }
+        .meme-card.active .keria-img .goofy-img { transform: scale(1.05) rotate(0deg); }
 
         .player-role { position: relative; z-index: 10; font-family: 'Orbitron', sans-serif; color: var(--t1-red); font-size: 0.85rem; font-weight: 900; margin-bottom: 0.4rem; letter-spacing: 2px; }
         .player-name { position: relative; z-index: 10; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.6rem; display: flex; align-items: baseline; gap: 0.5rem; }
@@ -285,7 +289,7 @@
         }
         .close-btn:hover { background: var(--t1-red); }
 
-        /* 가챠 특정 스타일 (페이즈 배경색 #e4e4e4 통일) */
+        /* 가챠 특정 스타일 */
         .gacha-img-container { width: 200px; height: 200px; margin: 0 auto; border: 2px solid var(--silver-accent); overflow: hidden; background: #e4e4e4; }
         .gacha-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
         .gacha-name { font-size: 1.5rem; font-weight: 900; }
@@ -338,7 +342,6 @@
         #dodge-game-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
         .dodge-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 15px; transition: background 0.3s ease; }
         
-        /* 게임 오버 시 캔버스 배경을 깔끔하게 블러 처리 */
         .dodge-overlay.blur-active { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         
         .dodge-score-text { font-size: 1.5rem; font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 900; margin-bottom: 10px; }
@@ -347,7 +350,7 @@
         .dodge-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); display: none; text-align: center; }
         .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; text-align: center; margin-bottom: 20px;}
 
-        /* ---------------- 점멸 피지컬 훈련 (광클 미니게임) 스타일 ---------------- */
+        /* ---------------- 점멸 피지컬 훈련 ---------------- */
         #clicker-modal .modal-box { border-color: #ffcc00; max-width: 400px; }
         .clicker-title { color: #ffcc00; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 5px; }
         .clicker-stats { font-size: 1.2rem; font-family: 'Orbitron', sans-serif; color: #fff; margin-bottom: 15px; display: flex; justify-content: space-between; padding: 0 10px; }
@@ -361,7 +364,6 @@
         .flash-target img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .flash-target:active { transform: scale(0.9); box-shadow: 0 0 50px #ffcc00; }
         
-        /* 점멸 게임 숨김용 클래스 */
         .clicker-hidden { display: none !important; }
         
         .clicker-start-btn { background: linear-gradient(90deg, #b38f00, #ffcc00); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 10px; }
@@ -372,26 +374,11 @@
         @keyframes flash { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes glitch-anim {
-  0%, 90%, 100% {
-    transform: translate(0);
-    filter: drop-shadow(0 0 10px var(--t1-red));
-  }
-  92% {
-    transform: translate(-3px, 1px);
-    filter: drop-shadow(0 0 10px #e2012d) hue-rotate(90deg);
-  }
-  94% {
-    transform: translate(3px, -1px);
-    filter: drop-shadow(0 0 10px #e2012d) hue-rotate(-90deg);
-  }
-  96% {
-    transform: translate(-2px, 2px);
-    filter: drop-shadow(0 0 20px #ff0044) brightness(1.5);
-  }
-  98% {
-    transform: translate(2px, -2px);
-    filter: drop-shadow(0 0 10px var(--t1-red));
-  }
+  0%, 90%, 100% { transform: translate(0); filter: drop-shadow(0 0 10px var(--t1-red)); }
+  92% { transform: translate(-3px, 1px); filter: drop-shadow(0 0 10px #e2012d) hue-rotate(90deg); }
+  94% { transform: translate(3px, -1px); filter: drop-shadow(0 0 10px #e2012d) hue-rotate(-90deg); }
+  96% { transform: translate(-2px, 2px); filter: drop-shadow(0 0 20px #ff0044) brightness(1.5); }
+  98% { transform: translate(2px, -2px); filter: drop-shadow(0 0 10px var(--t1-red)); }
 }
         @keyframes blink { 50% { opacity: 0; } }
         .cursor { animation: blink 0.7s infinite; }
@@ -596,7 +583,7 @@
             <div class="player-grid">
                 <div class="player-card meme-card">
                     <div class="player-img doran-img">
-                        <img src="https://i.namu.wiki/i/8UxGPyA6XQRCDHZIRfZh0khEkYRf6ayPG8N1DMkuEyFsCCd4w7QYJm6t3ah8VHOBKfKPmbsEPdDkAorY_ox_QA.webp" alt="Doran" class="normal-img" style="object-position: center 40%;">
+                        <img src="https://i.namu.wiki/i/8UxGPyA6XQRCDHZIRfZh0khEkYRf6ayPG8N1DMkuEyFsCCd4w7QYJm6t3ah8VHOBKfKPmbsEPdDkAorY_ox_QA.webp" alt="Doran" class="normal-img">
                         <img src="./19a679db86513f651.png" alt="Doran Meme" class="goofy-img">
                     </div>
                     <div class="player-role">TOP</div>
@@ -634,7 +621,7 @@
                     <div class="goofy-desc">... (아직 막내라 눈빛만 보내는 듯 하다)</div>
                 </div>
                 <div class="player-card meme-card">
-                    <div class="player-img">
+                    <div class="player-img keria-img">
                         <img src="https://i.namu.wiki/i/zErJ7Bg3WoqD1ninHZtpupeyFRI73GLEOzXYa73D5ObTOASAb9_4hx7vbJoRwdKJ95Vs52k1pLojixqSaKdWvg.webp" alt="Keria" class="normal-img">
                         <img src="https://wsrv.nl/?url=image.fmkorea.com/files/attach/new4/20241112/7687110740_14339012_7c77784d872a84c2676ca6e79d4fc56b.png" alt="Keria Meme" class="goofy-img">
                     </div>
@@ -683,7 +670,6 @@
   const stars = document.querySelector('.stars');
   const starYears = document.querySelector('.star-years');
 
-  // 로고 펄스
   logo.style.transition = 'filter 0.2s ease, transform 0.2s ease';
   logo.style.filter = 'drop-shadow(0 0 40px #e2012d) brightness(1.4)';
   logo.style.transform = 'scale(1.08)';
@@ -692,7 +678,6 @@
     logo.style.transform = 'scale(1)';
   }, 300);
 
-  // 별이 트로피로 바뀌었다가 복귀
   const originalStars = stars.textContent;
   const originalYears = starYears.textContent;
   stars.style.transition = 'opacity 0.2s ease';
@@ -1011,7 +996,6 @@
             predictResultBox.style.display = 'block';
         });
 
-
         // ---------------- 4. 티모 버섯 받기 미니게임 ----------------
         const openTeemoBtn = document.getElementById('open-teemo-modal');
         const teemoModal = document.getElementById('teemo-modal');
@@ -1043,12 +1027,7 @@
         let teemoTimerInterval;
         let mushrooms = [];
 
-        let teemo = {
-            x: 120, 
-            y: 230, 
-            width: 60,
-            height: 60
-        };
+        let teemo = { x: 120, y: 230, width: 60, height: 60 };
 
         openTeemoBtn.addEventListener('click', () => {
             teemoModal.classList.add('active');
@@ -1222,7 +1201,6 @@
             }
 
             let touchX = (clientX - rect.left) * scaleX;
-            
             teemo.x = touchX - (teemo.width / 2);
 
             if (teemo.x < 0) teemo.x = 0;
@@ -1231,7 +1209,6 @@
 
         teemoCanvas.addEventListener('touchmove', moveTeemo, {passive: false});
         teemoCanvas.addEventListener('mousemove', moveTeemo);
-
 
         // ---------------- 5. 유체화 무빙 훈련 ----------------
         const openDodgeBtn = document.getElementById('open-dodge-modal');
@@ -1254,7 +1231,6 @@
         let enemySpawnRate = 30; 
         let frameCount = 0;
 
-        // 유체화 이미지 로드
         const imgGhost = new Image();
         imgGhost.crossOrigin = "Anonymous";
         imgGhost.src = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/spell/SummonerHaste.png";
@@ -1382,7 +1358,6 @@
                 dCtx.fill();
             }
 
-            // 파란색 애쉬 화살
             for (let i = 0; i < enemies.length; i++) {
                 let e = enemies[i];
                 dCtx.save();
