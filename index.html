@@ -82,10 +82,14 @@
 
         .player-img { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; margin-bottom: 1.2rem; background-color: #111; border-bottom: 1px solid rgba(212, 212, 216, 0.2); }
         
-        /* 선수단 사진 확대 (10% 확대) */
+        /* 선수단 사진 확대 (10% 확대) 및 위치 여백 수정 */
         .player-img img.normal-img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
-            transform: scale(0.88); transform-origin: top center; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover;
+            object-position: center 15%; /* 정수리가 천장에 안 닿게 살짝 아래로 내림 */
+            transform: scale(1.1); /* 10% 제대로 확대! */
+            transform-origin: center center; /* 기준점을 중앙으로 변경 */
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
         
         .faker-solo { display: flex; justify-content: center; margin-bottom: 2rem; width: 100%; }
