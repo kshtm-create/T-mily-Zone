@@ -218,8 +218,7 @@
             transform: translateY(-5px); 
         }
 
-        /* ----- 이미지 섹션 수정! (배경색 e4e4e4 통일 및 기본위치 고정) ----- */
-        .player-img { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; margin-bottom: 1.2rem; background-color: #e4e4e4; border-bottom: 1px solid rgba(212, 212, 216, 0.2); }
+        .player-img { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; margin-bottom: 1.2rem; background-color: #111; border-bottom: 1px solid rgba(212, 212, 216, 0.2); }
         .player-img img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
 
         .normal-img { opacity: 1; z-index: 2; transition: opacity 0.4s ease, transform 0.4s ease; transform: scale(1); }
@@ -236,8 +235,8 @@
         .meme-card.active .normal-img { opacity: 0; transform: scale(0.95); }
         .meme-card.active .goofy-img { opacity: 1; transform: scale(1.05) rotate(0deg); }
         
-        /* 도란 밈 사진은 얼굴 나오게 하단 맞춤 */
-        .meme-card.active .doran-img .goofy-img { object-position: bottom center; }
+        /* --- 修正！도란 얼굴 정가운데 오게 object-position 수정 --- */
+        .meme-card.active .doran-img .goofy-img { object-position: center center; }
 
         /* ------------------------------------------------------------- */
 
@@ -261,7 +260,7 @@
         .faker-solo { display: flex; justify-content: center; margin-bottom: 2rem; width: 100%; }
         
         .faker-special { width: 100%; max-width: 280px; background: var(--card-bg); border: 1px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); position: relative; overflow: hidden; border-top: 4px solid #ffd700; display: flex; flex-direction: column; justify-content: flex-start; padding: 1.5rem; }
-        .faker-special .player-img { width: 100%; aspect-ratio: 1; margin-bottom: 1.2rem; background: #e4e4e4; border-bottom: 1px solid #ffd700; border-radius: 0; flex-shrink: initial; height: auto; }
+        .faker-special .player-img { width: 100%; aspect-ratio: 1; margin-bottom: 1.2rem; background: #111; border-bottom: 1px solid #ffd700; border-radius: 0; flex-shrink: initial; height: auto; }
         .faker-special .decorations { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; z-index: 10; filter: drop-shadow(0 0 10px #ffd700); letter-spacing: 5px; }
         .faker-special.active { border-color: #ffd700 !important; border-style: dashed !important; border-width: 4px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.8) !important; background: var(--card-bg) !important; transform: translateY(-5px); }
 
@@ -288,7 +287,7 @@
         }
         .close-btn:hover { background: var(--t1-red); }
 
-        /* 가챠 특정 스타일 (페이즈 배경색 #e4e4e4 통일) */
+        /* 가챠 특정 스타일 */
         .gacha-img-container { width: 200px; height: 200px; margin: 0 auto; border: 2px solid var(--silver-accent); overflow: hidden; background: #e4e4e4; }
         .gacha-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
         .gacha-name { font-size: 1.5rem; font-weight: 900; }
@@ -349,7 +348,7 @@
         .dodge-result-score { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; font-size: 2.55rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); display: none; text-align: center; }
         .dodge-result-msg { color: #fff; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; line-height: 1.4; font-size: 1rem; word-break: keep-all; text-align: center; margin-bottom: 20px;}
 
-        /* ---------------- 점멸 피지컬 훈련 (광클 미니게임) 스타일 ---------------- */
+        /* ---------------- 점멸 피지컬 훈련 ---------------- */
         #clicker-modal .modal-box { border-color: #ffcc00; max-width: 400px; }
         .clicker-title { color: #ffcc00; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 5px; }
         .clicker-stats { font-size: 1.2rem; font-family: 'Orbitron', sans-serif; color: #fff; margin-bottom: 15px; display: flex; justify-content: space-between; padding: 0 10px; }
@@ -363,7 +362,6 @@
         .flash-target img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .flash-target:active { transform: scale(0.9); box-shadow: 0 0 50px #ffcc00; }
         
-        /* 점멸 게임 숨김용 클래스 */
         .clicker-hidden { display: none !important; }
         
         .clicker-start-btn { background: linear-gradient(90deg, #b38f00, #ffcc00); border: none; color: #000; padding: 0.8rem 1.5rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border-radius: 5px; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 10px; }
@@ -374,26 +372,11 @@
         @keyframes flash { 0% { filter: brightness(1); } 100% { filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes glitch-anim {
-  0%, 90%, 100% {
-    transform: translate(0);
-    filter: drop-shadow(0 0 10px var(--t1-red));
-  }
-  92% {
-    transform: translate(-3px, 1px);
-    filter: drop-shadow(0 0 10px #e2012d) hue-rotate(90deg);
-  }
-  94% {
-    transform: translate(3px, -1px);
-    filter: drop-shadow(0 0 10px #e2012d) hue-rotate(-90deg);
-  }
-  96% {
-    transform: translate(-2px, 2px);
-    filter: drop-shadow(0 0 20px #ff0044) brightness(1.5);
-  }
-  98% {
-    transform: translate(2px, -2px);
-    filter: drop-shadow(0 0 10px var(--t1-red));
-  }
+  0%, 90%, 100% { transform: translate(0); filter: drop-shadow(0 0 10px var(--t1-red)); }
+  92% { transform: translate(-3px, 1px); filter: drop-shadow(0 0 10px #e2012d) hue-rotate(90deg); }
+  94% { transform: translate(3px, -1px); filter: drop-shadow(0 0 10px #e2012d) hue-rotate(-90deg); }
+  96% { transform: translate(-2px, 2px); filter: drop-shadow(0 0 20px #ff0044) brightness(1.5); }
+  98% { transform: translate(2px, -2px); filter: drop-shadow(0 0 10px var(--t1-red)); }
 }
         @keyframes blink { 50% { opacity: 0; } }
         .cursor { animation: blink 0.7s infinite; }
@@ -581,7 +564,7 @@
             <div class="faker-solo">
                 <div class="player-card faker-special meme-card">
                     <div class="decorations">👑🌹</div>
-                    <div class="player-img">
+                    <div class="player-img special-img">
                         <img src="https://i.namu.wiki/i/lXk-QGwNN1SozkiftTC4o-hyHa9TFic6zqSKOU_Pr0zm03WnqwNiV7a29-RRSK5NzizWKxkUlh5pQ0fxDjU3OA.webp" alt="Faker" class="normal-img">
                         <img src="./i14089340259.jpg" alt="Faker Meme" class="goofy-img">
                     </div>
@@ -653,7 +636,7 @@
             <h3 class="roster-subtitle">COACHING STAFF</h3>
             <div class="player-grid">
                 <div class="player-card">
-                    <div class="player-img">
+                    <div class="player-img staff-img-container">
                         <img src="https://i.namu.wiki/i/KxVIyvi2ZD8JdCDnJ9OCMyDK8CfuF9EdKw_xQ80EZ4ksyQiNaGS-0IeN7jgiQOCM4nVKoluVJWlwuHC4X1XNLj34tACXWb2hd-7C7VehFl8hTnbo4q4coWSaY7p5fls0owdva1-uSrnHfwaBxVSomg.webp" alt="Tom" class="normal-img">
                     </div>
                     <div class="player-role">HEAD COACH</div>
@@ -664,8 +647,8 @@
                     </div>
                 </div>
                 <div class="player-card">
-                    <div class="player-img">
-                        <img src="https://i.namu.wiki/i/DSh_wq6yV-mi8X-6Ueej9k4L_6qm8Ea_WBiC5R9wVYp4C_2FcyQxBm_4XEiK9JD--bbrqk25Zc82FcTTxc3HcupH-QWj_tsWd6K0jnChm-pgf86K9mnrA7dDjpSoBhS-EmOxp7dhoStojQDRyA2Pvw.webp" alt="Mata" class="normal-img">
+                    <div class="player-img staff-img-container">
+                        <img src="https://i.namu.wiki/i/DSh_wq6yV-mi8X-6Ueej9k4L_6qm8Ea_WBiC5R9wVYp4C_2FcyQxBm_4XEiK9JD--bbrqk25Zc82FcTTxc3HcupH-QWj_tsWd6K0jnChm-pgf86K9mnrA7dDjpSoBhS-EmOxp7dhoStojQDRyA2Pvw.webp" alt="Mata" class="normal-img staff-portrait">
                     </div>
                     <div class="player-role">COACH</div>
                     <div class="player-name">Mata <span>조세형</span></div>
@@ -685,7 +668,6 @@
   const stars = document.querySelector('.stars');
   const starYears = document.querySelector('.star-years');
 
-  // 로고 펄스
   logo.style.transition = 'filter 0.2s ease, transform 0.2s ease';
   logo.style.filter = 'drop-shadow(0 0 40px #e2012d) brightness(1.4)';
   logo.style.transform = 'scale(1.08)';
@@ -694,7 +676,6 @@
     logo.style.transform = 'scale(1)';
   }, 300);
 
-  // 별이 트로피로 바뀌었다가 복귀
   const originalStars = stars.textContent;
   const originalYears = starYears.textContent;
   stars.style.transition = 'opacity 0.2s ease';
