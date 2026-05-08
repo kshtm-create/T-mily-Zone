@@ -501,7 +501,7 @@
 
     <div class="hud-container">
         <div class="header">
-           <img src="<img src="./T1 LOGO.svg" alt="T1 Logo" class="logo" id="t1-logo">
+           <img src="./t1logo.svg" alt="T1 Logo" class="logo" id="t1-logo">
             <div class="stars">★★★★★★</div>
             <div class="star-years">13' 15' 16' 23' 24' 25'</div>
         </div>
@@ -656,39 +656,49 @@
 
     <script>
         document.getElementById('t1-logo').addEventListener('click', () => {
-  const toast = document.createElement('div');
-  toast.textContent = '티원입니다~ 🏆';
-  toast.style.cssText = `
+  // 로고 펄스 효과
+  const logo = document.getElementById('t1-logo');
+  logo.style.transition = 'filter 0.15s ease';
+  logo.style.filter = 'drop-shadow(0 0 30px #e2012d) drop-shadow(0 0 60px #e2012d)';
+  setTimeout(() => {
+    logo.style.filter = 'drop-shadow(0 0 10px var(--t1-red))';
+  }, 300);
+
+  // 팝업 텍스트
+  const pop = document.createElement('div');
+  pop.textContent = '🏆 티원입니다~';
+  pop.style.cssText = `
     position: fixed;
-    top: 80px;
+    top: 120px;
     left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: #111;
-    color: #fff;
-    padding: 0.75rem 1.5rem;
+    transform: translateX(-50%) scale(0.6);
+    background: transparent;
+    color: #e2012d;
     font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    border: 1px solid var(--t1-red);
-    border-radius: 6px;
+    font-weight: 900;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(226,1,45,0.8);
     z-index: 9999;
-    box-shadow: 0 0 16px rgba(226,1,45,0.4);
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     white-space: nowrap;
   `;
-  document.body.appendChild(toast);
+  document.body.appendChild(pop);
+
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateX(-50%) translateY(0)';
+      pop.style.opacity = '1';
+      pop.style.transform = 'translateX(-50%) scale(1) translateY(-10px)';
     });
   });
+
   setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(-50%) translateY(-10px)';
-    setTimeout(() => toast.remove(), 300);
-  }, 2000);
+    pop.style.opacity = '0';
+    pop.style.transform = 'translateX(-50%) scale(0.8) translateY(-20px)';
+    setTimeout(() => pop.remove(), 400);
+  }, 1500);
 });
         const texts = [
             "\"모든 길은 결국, 저를 통합니다.\"",
