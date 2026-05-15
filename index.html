@@ -73,12 +73,22 @@
             padding-bottom: 1rem;
         }
 
-        .logo {
-            width: 140px;
-            margin-bottom: 1rem;
+        /* ---------------- 로고 텍스트 스타일 ---------------- */
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: var(--t1-red);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+            font-style: italic; /* 이탤릭체 적용 */
+            padding-right: 10px; /* 이탤릭체 잘림 방지 */
             filter: drop-shadow(0 0 10px var(--t1-red));
             animation: glitch-anim 3s infinite;
             cursor: pointer;
+            user-select: none;
+            line-height: 1;
         }
 
         .stars {
@@ -224,28 +234,23 @@
         .normal-img { opacity: 1; z-index: 2; transition: opacity 0.4s ease, transform 0.4s ease; transform: scale(1); }
         .goofy-img { opacity: 0; z-index: 3; transition: opacity 0.4s ease, transform 0.4s ease; transform: scale(1.05); }
 
-        /* 선수별 디테일 밸런스 맞춤 (얼굴 크기 비슷하게 조정) */
+        /* 선수별 디테일 밸런스 맞춤 */
         .doran-img .normal-img { transform: scale(0.95); transform-origin: top center; }
         .oner-img .normal-img { transform: scale(1.05); transform-origin: top center; }
-        .peyz-img { background-color: #e4e4e4; } /* <-- 드디어 다시 들어간 회색 배경! */
+        .peyz-img { background-color: #e4e4e4; } 
         .peyz-img .normal-img { transform: scale(0.95); transform-origin: bottom center; }
         .keria-img .normal-img { transform: scale(0.95); transform-origin: top center; }
 
-        /* 밈 카드 클릭 시 모션 얌전하게 통일 */
+        /* 밈 카드 클릭 시 모션 */
         .player-card:not(.meme-card):hover .normal-img { transform: scale(1.05); }
         .meme-card.active .normal-img { opacity: 0; transform: scale(0.95); }
         .meme-card.active .goofy-img { opacity: 1; transform: scale(1.05) rotate(0deg); }
-        
-        /* --- 修正！도란 얼굴 정가운데 오게 object-position 수정 --- */
         .meme-card.active .doran-img .goofy-img { object-position: center center; }
-
-        /* ------------------------------------------------------------- */
 
         .player-role { position: relative; z-index: 10; font-family: 'Orbitron', sans-serif; color: var(--t1-red); font-size: 0.85rem; font-weight: 900; margin-bottom: 0.4rem; letter-spacing: 2px; }
         .player-name { position: relative; z-index: 10; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.6rem; display: flex; align-items: baseline; gap: 0.5rem; }
         .player-name span { font-size: 0.9rem; color: #888; font-weight: 400; }
         
-        /* normal-desc 폰트 및 구조 정상화! */
         .normal-desc { position: relative; z-index: 10; display: flex; flex-direction: column; gap: 10px; word-break: keep-all; }
         .desc-highlight { font-size: 0.95rem; color: #fff; font-weight: 700; line-height: 1.4; border-bottom: 1px dashed rgba(212, 212, 216, 0.3); padding-bottom: 10px; }
         .desc-highlight strong { font-weight: 900; text-shadow: 0 0 3px rgba(255,255,255,0.3); }
@@ -296,14 +301,22 @@
         .rolling { animation: flash 0.1s infinite alternate; }
 
         /* ---------------- 그리기 미니게임 스타일 ---------------- */
-        .canvas-container { position: relative; width: 100%; height: 200px; background: #111; border: 2px dashed #555; border-radius: 5px; overflow: hidden; }
+        .canvas-container { position: relative; width: 100%; height: 200px; background: #111; border: 2px dashed #555; border-radius: 5px; overflow: hidden; margin: 15px 0; }
         #bg-canvas, #draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         #draw-canvas { cursor: crosshair; touch-action: none; }
         .draw-actions { display: flex; gap: 0.5rem; justify-content: center; }
         .draw-btn-small { flex: 1; padding: 0.8rem; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; border: none; border-radius: 5px; cursor: pointer; color: #fff; transition: all 0.2s; }
         .btn-clear { background: #444; } .btn-clear:hover { background: #666; }
         .btn-submit { background: var(--t1-red); } .btn-submit:hover { background: #ff3355; }
-        .draw-result-text { font-size: 0.95rem; font-weight: bold; min-height: 2.5rem; color: #ccc; word-break: keep-all; }
+        .draw-result-text { font-size: 0.95rem; font-weight: bold; min-height: 2.5rem; color: #ccc; word-break: keep-all; margin-bottom: 10px; }
+        .draw-mode-options { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px; }
+        .draw-mode-btn { background: #222; border: 2px solid #444; color: #aaa; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; font-weight: bold; transition: all 0.2s; flex: 1; }
+        .draw-mode-btn.active { background: var(--t1-red); color: white; border-color: var(--t1-red); }
+        .draw-mode-btn[data-mode="trophy"].active { background: #ffd700; color: #000; border-color: #ffd700; }
+
+        .color-picker { display: flex; justify-content: center; gap: 12px; margin-bottom: 10px; }
+        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+        .color-btn.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 10px rgba(255,255,255,0.6); }
 
         /* ---------------- 경기 예측하기 스타일 ---------------- */
         .predict-step { margin-bottom: 1rem; }
@@ -402,13 +415,25 @@
 
     <div class="modal-overlay" id="draw-modal">
         <div class="modal-box">
-            <div class="modal-title">T1 LOGO TEST</div>
-            <p style="font-size: 0.85rem; color: #ffaa00; margin: 0; font-weight: bold;">T1 로고 그리기</p>
+            <div class="modal-title">DRAWING TEST</div>
+            <div class="draw-mode-options">
+                <button class="draw-mode-btn active" data-mode="trophy">🏆 트로피</button>
+                <button class="draw-mode-btn" data-mode="rose">🌹 장미</button>
+            </div>
+            <div class="color-picker" id="color-picker">
+                <!-- 트로피 전용 색상 (노란색, 갈색) -->
+                <button class="color-btn trophy-color active" data-color="#ffd700" style="background-color: #ffd700;" title="골드"></button>
+                <button class="color-btn trophy-color" data-color="#8b4513" style="background-color: #8b4513;" title="브라운"></button>
+                
+                <!-- 장미 전용 색상 (빨강, 초록) - 초기에는 숨김 -->
+                <button class="color-btn rose-color" data-color="#e2012d" style="background-color: #e2012d; display: none;" title="레드"></button>
+                <button class="color-btn rose-color" data-color="#2d8a2d" style="background-color: #2d8a2d; display: none;" title="그린"></button>
+            </div>
             <div class="canvas-container">
                 <canvas id="bg-canvas" width="300" height="200"></canvas>
                 <canvas id="draw-canvas" width="300" height="200"></canvas>
             </div>
-            <div class="draw-result-text" id="draw-result">티밀리 실력 좀 볼까?</div>
+            <div class="draw-result-text" id="draw-result">그림을 그려주세요!</div>
             <div class="draw-actions">
                 <button class="draw-btn-small btn-clear" id="clear-canvas">다시 그리기</button>
                 <button class="draw-btn-small btn-submit" id="submit-canvas">결과 확인</button>
@@ -510,7 +535,8 @@
 
     <div class="hud-container">
         <div class="header">
-           <img src="./t1logo.svg" alt="T1 Logo" class="logo" id="t1-logo">
+            <!-- 이미지 로고 대신 텍스트 로고 사용 -->
+            <div class="logo-text" id="t1-logo">T1</div>
             <div class="stars">★★★★★★</div>
             <div class="star-years">13' 15' 16' 23' 24' 25'</div>
         </div>
@@ -524,7 +550,7 @@
                 <span>직관 파트너 뽑기</span>
             </button>
             <button class="gacha-btn draw-game-btn" id="start-draw">
-                <span>T1 로고 그리기</span>
+                <span>팬아트 그리기</span>
             </button>
             <button class="gacha-btn predict-game-btn" id="start-predict">
                 <span>오늘 경기 예측</span>
@@ -665,44 +691,45 @@
 
     <script>
         document.getElementById('t1-logo').addEventListener('click', () => {
-  const logo = document.getElementById('t1-logo');
-  const stars = document.querySelector('.stars');
-  const starYears = document.querySelector('.star-years');
+            const logo = document.getElementById('t1-logo');
+            const stars = document.querySelector('.stars');
+            const starYears = document.querySelector('.star-years');
 
-  logo.style.transition = 'filter 0.2s ease, transform 0.2s ease';
-  logo.style.filter = 'drop-shadow(0 0 40px #e2012d) brightness(1.4)';
-  logo.style.transform = 'scale(1.08)';
-  setTimeout(() => {
-    logo.style.filter = 'drop-shadow(0 0 10px var(--t1-red))';
-    logo.style.transform = 'scale(1)';
-  }, 300);
+            logo.style.transition = 'filter 0.2s ease, transform 0.2s ease';
+            logo.style.filter = 'drop-shadow(0 0 40px #e2012d) brightness(1.4)';
+            logo.style.transform = 'scale(1.08)';
+            setTimeout(() => {
+                logo.style.filter = 'drop-shadow(0 0 10px var(--t1-red))';
+                logo.style.transform = 'scale(1)';
+            }, 300);
 
-  const originalStars = stars.textContent;
-  const originalYears = starYears.textContent;
-  stars.style.transition = 'opacity 0.2s ease';
-  stars.style.opacity = '0';
-  setTimeout(() => {
-    stars.textContent = '🏆🏆🏆🏆🏆🏆';
-    stars.style.fontSize = '1.3rem';
-    starYears.textContent = "티원입니다~";
-    starYears.style.color = '#e2012d';
-    starYears.style.fontFamily = "'Noto Sans KR', sans-serif";
-    starYears.style.fontWeight = '900';
-    stars.style.opacity = '1';
-  }, 200);
-  setTimeout(() => {
-    stars.style.opacity = '0';
-  }, 1800);
-  setTimeout(() => {
-    stars.textContent = originalStars;
-    stars.style.fontSize = '';
-    starYears.textContent = originalYears;
-    starYears.style.color = '';
-    starYears.style.fontFamily = '';
-    starYears.style.fontWeight = '';
-    stars.style.opacity = '1';
-  }, 2000);
-});
+            const originalStars = stars.textContent;
+            const originalYears = starYears.textContent;
+            stars.style.transition = 'opacity 0.2s ease';
+            stars.style.opacity = '0';
+            setTimeout(() => {
+                stars.textContent = '🏆🏆🏆🏆🏆🏆';
+                stars.style.fontSize = '1.3rem';
+                starYears.textContent = "티원입니다~";
+                starYears.style.color = '#e2012d';
+                starYears.style.fontFamily = "'Noto Sans KR', sans-serif";
+                starYears.style.fontWeight = '900';
+                stars.style.opacity = '1';
+            }, 200);
+            setTimeout(() => {
+                stars.style.opacity = '0';
+            }, 1800);
+            setTimeout(() => {
+                stars.textContent = originalStars;
+                stars.style.fontSize = '';
+                starYears.textContent = originalYears;
+                starYears.style.color = '';
+                starYears.style.fontFamily = '';
+                starYears.style.fontWeight = '';
+                stars.style.opacity = '1';
+            }, 2000);
+        });
+
         const texts = [
             "\"모든 길은 결국, 저를 통합니다.\"",
             "\"가장 높은 산, 가장 긴 강.\"",
@@ -792,7 +819,7 @@
         });
         closeGachaBtn.addEventListener('click', () => gachaModal.classList.remove('active'));
 
-        // ---------------- 2. 그리기 미니게임 ----------------
+        // ---------------- 2. 팬아트 그리기 미니게임 (트로피/장미) ----------------
         const drawBtn = document.getElementById('start-draw');
         const drawModal = document.getElementById('draw-modal');
         const closeDrawBtn = document.getElementById('close-draw-modal');
@@ -803,45 +830,81 @@
         const clearBtn = document.getElementById('clear-canvas');
         const submitBtn = document.getElementById('submit-canvas');
         const drawResult = document.getElementById('draw-result');
+        const drawModeBtns = document.querySelectorAll('.draw-mode-btn');
 
         let isDrawing = false;
-        let isLogoLoaded = false;
-        
-        const targetLogo = new Image();
-        targetLogo.crossOrigin = "Anonymous";
-        targetLogo.src = "https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/en/thumb/f/f9/T1_logo.svg/512px-T1_logo.svg.png";
-        
-        targetLogo.onload = () => {
-            isLogoLoaded = true;
-            if (drawModal.classList.contains('active')) initBgCanvas();
-        };
+        let currentDrawMode = 'trophy';
+        let currentPenColor = '#ffd700';
 
-        function safeDrawImage(c, img, x, y, w, h, fallbackText) {
-            if (img.complete && img.naturalWidth > 0) {
-                c.drawImage(img, x, y, w, h);
-            } else if (fallbackText) {
-                c.font = "900 130px Orbitron";
-                c.textAlign = "center";
-                c.textBaseline = "middle";
-                c.fillStyle = "rgba(255, 255, 255, 0.2)";
-                c.fillText(fallbackText, 150, 100);
+        const colorBtns = document.querySelectorAll('.color-btn');
+
+        colorBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                colorBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentPenColor = e.target.getAttribute('data-color');
+            });
+        });
+
+        drawModeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                drawModeBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentDrawMode = e.target.getAttribute('data-mode');
+                
+                // 모드에 따라 팔레트 색상을 노출/숨김 처리
+                const trophyColors = document.querySelectorAll('.trophy-color');
+                const roseColors = document.querySelectorAll('.rose-color');
+                colorBtns.forEach(b => b.classList.remove('active'));
+
+                if (currentDrawMode === 'trophy') {
+                    trophyColors.forEach(b => b.style.display = 'block');
+                    roseColors.forEach(b => b.style.display = 'none');
+                    currentPenColor = '#ffd700'; // 기본 골드
+                    document.querySelector('.trophy-color[data-color="#ffd700"]').classList.add('active');
+                } else {
+                    trophyColors.forEach(b => b.style.display = 'none');
+                    roseColors.forEach(b => b.style.display = 'block');
+                    currentPenColor = '#e2012d'; // 기본 레드
+                    document.querySelector('.rose-color[data-color="#e2012d"]').classList.add('active');
+                }
+
+                initBgCanvas();
+                initDrawCanvas();
+            });
+        });
+
+        function renderDrawTarget(c) {
+            c.textAlign = "center";
+            c.textBaseline = "middle";
+            if (currentDrawMode === 'trophy') {
+                c.font = "90px 'Noto Color Emoji', sans-serif";
+                c.fillText("🏆", 150, 115);
+                
+                // 트로피 주변 별들 추가 (반짝이 ✨ 제거하고 별 ⭐ 2개만 남김)
+                c.font = "35px 'Noto Color Emoji', sans-serif";
+                c.fillText("⭐", 60, 60);
+                c.fillText("⭐", 230, 150);
+            } else {
+                c.font = "120px 'Noto Color Emoji', sans-serif";
+                c.fillText("🌹", 150, 105);
             }
         }
 
         function initBgCanvas() {
             bgCtx.clearRect(0,0, 300, 200);
-            if (isLogoLoaded) {
-                bgCtx.globalAlpha = 0.2;
-                safeDrawImage(bgCtx, targetLogo, 40, 60, 220, 80, "T1");
-                bgCtx.globalAlpha = 1.0;
-            } else {
-                safeDrawImage(bgCtx, targetLogo, 0, 0, 0, 0, "T1");
-            }
+            bgCtx.globalAlpha = 0.2; // 이모지를 투명한 도안처럼 보이게 처리
+            renderDrawTarget(bgCtx);
+            bgCtx.globalAlpha = 1.0;
         }
 
         function initDrawCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawResult.innerHTML = "T....1... (쓱쓱)";
+            if (currentDrawMode === 'trophy') {
+                drawResult.innerHTML = "우승컵과 주변의 별(⭐)까지 모두 그려주세요!";
+            } else {
+                drawResult.innerHTML = "대상혁에게 바칠 장미(🌹)를 그려주세요!";
+            }
             drawResult.style.color = "#ccc";
         }
 
@@ -873,9 +936,10 @@
             
             const pos = getDrawPos(e);
             
-            ctx.lineWidth = 9; 
+            ctx.lineWidth = 8;
             ctx.lineCap = 'round';
-            ctx.strokeStyle = '#e2012d';
+            // 선택한 펜 색상 적용
+            ctx.strokeStyle = currentPenColor; 
             ctx.lineTo(pos.x, pos.y);
             ctx.stroke();
             ctx.beginPath();
@@ -895,11 +959,7 @@
             hCanvas.width = 300; hCanvas.height = 200;
             const hCtx = hCanvas.getContext('2d');
             
-            if (isLogoLoaded && targetLogo.naturalWidth > 0) {
-                hCtx.drawImage(targetLogo, 40, 60, 220, 80);
-            } else { 
-                hCtx.font = "900 130px Orbitron"; hCtx.textAlign = "center"; hCtx.textBaseline = "middle"; hCtx.fillStyle = "black"; hCtx.fillText("T1", 150, 100); 
-            }
+            renderDrawTarget(hCtx);
 
             const targetData = hCtx.getImageData(0,0, 300, 200).data;
             const userData = ctx.getImageData(0,0, 300, 200).data;
@@ -907,7 +967,7 @@
             let targetPixels = 0; let hitPixels = 0; let overdrawPixels = 0;
 
             for(let i = 3; i < targetData.length; i += 4) {
-                const isTarget = targetData[i] > 50; 
+                const isTarget = targetData[i] > 10; 
                 const isUser = userData[i] > 50;     
                 if (isTarget) targetPixels++;
                 if (isTarget && isUser) hitPixels++;
@@ -916,16 +976,38 @@
 
             if (targetPixels === 0) return;
 
+            // 시그니처 컬러 사용 시 보너스 점수! (+5점)
+            let colorBonus = 0;
+            if (currentDrawMode === 'trophy' && currentPenColor === '#ffd700') colorBonus = 5;
+            if (currentDrawMode === 'rose' && currentPenColor === '#e2012d') colorBonus = 5;
+
             let coverage = (hitPixels / targetPixels) * 100;
-            let penalty = (overdrawPixels / targetPixels) * 110; 
-            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 2.0) - penalty)));
+            let penalty = (overdrawPixels / targetPixels) * 150; 
+            let finalScore = Math.max(0, Math.min(100, Math.round((coverage * 1.35) - penalty + colorBonus)));
 
             let msg = ""; let color = "#fff";
 
-            if (finalScore >= 90) { msg = `[ ${finalScore}% ] 페이커 아지르 토스를 보는 듯한 완벽한 각도! 폼 미쳤다!! 👑`; color = "#ffd700"; } 
-            else if (finalScore >= 70) { msg = `[ ${finalScore}% ] 오너의 리신 이니시급 날카로움! 티밀리 피지컬 칭찬해! ⚡`; color = "#00ff00"; } 
-            else if (finalScore >= 40) { msg = `[ ${finalScore}% ] 페이즈의 카이팅이 이거보단 정교할 듯? (쪼금 아쉽네) 🏹`; color = "#ffaa00"; } 
-            else { msg = `[ ${finalScore}% ] 삐빅- 방출 명단입니다. 와드나 박으러 가세요! 💀`; color = "#ff0000"; }
+            if (finalScore >= 90) { 
+                msg = currentDrawMode === 'trophy' ? `[ ${finalScore}% ] 완벽한 V6 트로피! 우승컵을 들어올립니다 🏆` : `[ ${finalScore}% ] 완벽한 장미! 대상혁이 감동했습니다!! 🌹`; 
+                color = currentDrawMode === 'trophy' ? "#ffd700" : "#ff3355"; 
+            } 
+            else if (finalScore >= 65) { 
+                msg = `[ ${finalScore}% ] 제법 비슷한데요? 디테일이 살아있네요! ✨`; 
+                color = "#00ff00"; 
+            } 
+            else if (finalScore >= 40) { 
+                msg = `[ ${finalScore}% ] 형태는 찌그러졌지만... 정성은 합격! 😅`; 
+                color = "#ffaa00"; 
+            } 
+            else { 
+                msg = `[ ${finalScore}% ] 줴줴이야.. 다시 그려보세요! 😭`; 
+                color = "#ff0000"; 
+            }
+
+            // 시그니처 컬러를 안 썼을 때 소소한 팁 추가 (점수가 65점 미만으로 낮을 때만 표시)
+            if (colorBonus === 0 && finalScore < 65) {
+                msg += "<br><span style='font-size:0.8rem; color:#aaa;'>(Tip: 알맞은 테마 색상을 쓰면 보너스 점수가?!)</span>";
+            }
 
             drawResult.innerHTML = msg; drawResult.style.color = color;
         });
